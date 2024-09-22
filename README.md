@@ -24,7 +24,7 @@
 
 4. **Start Flask api:**
     ```bash
-    py api/app.py
+    py api/api.py
 
 5. **Start React app:**
     ```bash

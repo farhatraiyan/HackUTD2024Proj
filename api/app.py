@@ -10,6 +10,3 @@ def get_data():
         'message': 'API is responsive!!'
     }
     return jsonify(data)
-
-if __name__ == '__main__':
-    app.run(debug=True)
