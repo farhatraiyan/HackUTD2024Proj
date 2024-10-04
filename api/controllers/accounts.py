@@ -17,6 +17,22 @@ class CreateAccount(Resource):
             db.session.rollback()
             abort(500, description=str(e))
 
+class DeleteAccount(Resource):
+    def delete(self, username):
+        if not username:
+            abort(400, description="Invalid input.")
+        try:
+            account = Account.query.filter_by(username=username).first()
+            if account:
+                db.session.delete(account)
+                db.session.commit()
+                return jsonify(account.to_dict())
+            print('account not found')
+            return {'message': f'Account not found'}, 404
+        except Exception as e:
+            db.session.rollback()
+            abort(500, description=str(e))
+
 class ListAccounts(Resource):
     def get(self):
         try:
