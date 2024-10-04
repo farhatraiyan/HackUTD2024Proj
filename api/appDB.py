@@ -1,14 +1,11 @@
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from app import app
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy()
 
-db = SQLAlchemy(app)
-
-# class ExampleModel(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(80), nullable=False)
-
-#     def __repr__(self):
-#         return f'<ExampleModel {self.name}>'
+def create_app():
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///api.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db.init_app(app)
+    return app
