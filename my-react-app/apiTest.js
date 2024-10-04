@@ -54,6 +54,17 @@ describe('Flask API', () => {
         console.log(resBody);
     });
 
+    it('GET /accounts/:username should return just the posted user', async () => {
+        const req = {
+            method: 'GET'
+        }
+
+        const response = await fetch(`${serviceUrl}/accounts/user3`, req);
+        const resBody = await response.json();
+
+        console.log(resBody);
+    });
+
     it('POST /accounts should fail to post account with same username', async () => {
         const account = {
             username: 'user3',
