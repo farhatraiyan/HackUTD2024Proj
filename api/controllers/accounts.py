@@ -67,6 +67,18 @@ class RetrieveAccountById(Resource):
         except Exception as e:
             abort(500, description='Failed to retrieve account.')
 
+class RetrieveAccountByUsername(Resource):
+    def get(self, username):
+        try:
+            account = retrieveAccount({'username': username})
+
+            if account:
+                return jsonify(account.to_dict())
+
+            return {'message': f'Account not found'}, 404
+        except Exception as e:
+            abort(500, description='Failed to retrieve account.')
+
 class UpdateAccount(Resource):
     def put(self, id):
         try:
