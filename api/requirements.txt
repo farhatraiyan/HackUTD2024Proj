@@ -1,4 +1,3 @@
 Flask
-flask-cors
 flask-sqlalchemy
 flask_restful
