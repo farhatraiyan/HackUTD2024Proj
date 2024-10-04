@@ -32,12 +32,23 @@ describe('Flask API', () => {
         postedId = resBody.id;
     });
 
-    it('GET /accounts should now return posted user', async () => {
+    it('GET /accounts should now return posted user as part of array', async () => {
         const req = {
             method: 'GET'
         }
 
         const response = await fetch(`${serviceUrl}/accounts`, req);
+        const resBody = await response.json();
+
+        console.log(resBody);
+    });
+
+    it('GET /accounts/:id should return just the posted user', async () => {
+        const req = {
+            method: 'GET'
+        }
+
+        const response = await fetch(`${serviceUrl}/accounts/${postedId}`, req);
         const resBody = await response.json();
 
         console.log(resBody);
@@ -60,7 +71,7 @@ describe('Flask API', () => {
         console.log(resBody);
     });
 
-    it('PUT /accounts should update the account username (and password)', async () => {
+    it('PUT /accounts/:id should update the account username (and password)', async () => {
         const account = {
             username: 'user4',
             password: 'pass2'
@@ -77,7 +88,7 @@ describe('Flask API', () => {
         console.log(resBody);
     });
 
-    it('DELETE /accounts should delete the posted user account', async () => {
+    it('DELETE /accounts/:id should delete the posted user account', async () => {
         const req = {
             method: 'DELETE'
         }
@@ -88,7 +99,7 @@ describe('Flask API', () => {
         console.log(resBody);
     });
 
-    it('DELETE /accounts should fail to delete non-existant account', async () => {
+    it('DELETE /accounts/:id should fail to delete non-existant account', async () => {
         const req = {
             method: 'DELETE'
         }
