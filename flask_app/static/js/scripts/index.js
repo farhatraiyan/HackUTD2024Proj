@@ -1,1 +1,1 @@
-ReactDOM.render(<Navbar />, document.getElementById('navbar'));
+ReactDOM.render(<Navbar currentPage={'home'} />, document.getElementById('navbar'));
