@@ -1,0 +1,1 @@
+ReactDOM.render(<Navbar currentPage={'status'} />, document.getElementById('navbar'));
