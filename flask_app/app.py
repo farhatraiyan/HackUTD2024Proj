@@ -24,5 +24,11 @@ def index():
 def status():
     return render_template('status.html')
 
+@app.route('/api/status')
+def api_status():
+    return {
+        'status': 'ok'
+    }
+
 if __name__ == '__main__':
     app.run(debug=True, port=8101)
