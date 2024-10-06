@@ -2,9 +2,11 @@ from flask_restful import Api
 from appDB import create_app, db
 from controllers.accounts import CreateAccount, DeleteAccount, ListAccounts, RetrieveAccountById, RetrieveAccountByUsername, UpdateAccount
 from controllers.utils import Status
+from flask_cors import CORS
 
 app = create_app()
 api = Api(app)
+CORS(app)
 
 with app.app_context():
     db.create_all()
