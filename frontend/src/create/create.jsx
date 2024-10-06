@@ -1,11 +1,11 @@
 import '../App.css';
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './createAccount.jsx'
+import CreateAccount from '../components/CreateAccount.jsx'
 import '../index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <CreateAccount />
   </StrictMode>,
 )
