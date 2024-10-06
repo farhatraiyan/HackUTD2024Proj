@@ -4,6 +4,9 @@
   padding: 2rem;
   text-align: center;
 }
+input {
+  margin: 10px
+}
 
 .logo {
   height: 6em;

@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "api_test":  "mocha --exit \"apiTest.js\"",
+    "api_test": "mocha --exit \"apiTest.js\"",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
@@ -18,11 +18,13 @@
     "mocha": "^10.7.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
+    "@types/node": "^22.7.4",
     "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.2",
