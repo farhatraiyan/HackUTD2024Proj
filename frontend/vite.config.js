@@ -8,10 +8,10 @@ export default defineConfig({
     build: {
         rollupOptions:{
             input: {
-                main: './src/index.html',
-                create: './src/create/index.html',
-                status: './src/status/index.html',
-                about: './src/about/index.html'
+                home: './src/views/home.html',
+                create: './src/views/create.html',
+                status: './src/views/status.html',
+                about: './src/views/about.html'
             }
         }
     }

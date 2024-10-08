@@ -24,19 +24,19 @@ api.add_resource(Status, '/status')
 
 @app.route('/')
 def serve_home():
-    return send_from_directory(os.path.join(app.root_path, 'dist'), 'index.html')
+    return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'home.html')
 
 @app.route('/create/')
 def serve_create_acc():
-    return send_from_directory(os.path.join(app.root_path, 'dist/create'), 'index.html')
+    return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'create.html')
 
 @app.route('/status/')
 def serve_status():
-    return send_from_directory(os.path.join(app.root_path, 'dist/status'), 'index.html')
+    return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'status.html')
 
 @app.route('/about/')
 def serve_about():
-    return send_from_directory(os.path.join(app.root_path, 'dist/about'), 'index.html')
+    return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'about.html')
 
 @app.route('/assets/<path:filename>')
 def serve_assets(filename):
