@@ -7,7 +7,7 @@
     "api_test": "mocha --exit \"apiTest.js\"",
     "dev": "vite",
     "build": "vite build",
-    "postbuild": "shx mv ./src/dist ../api/dist",
+    "postbuild": "shx rm -rf ../api/dist && shx mv ./src/dist ../api/dist",
     "lint": "eslint .",
     "preview": "vite preview"
   },
