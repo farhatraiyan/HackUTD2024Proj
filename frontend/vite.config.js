@@ -7,7 +7,12 @@ export default defineConfig({
     plugins: [react()],
     build: {
         rollupOptions:{
-            input: './src/views/about/',
+            input: {
+                main: './src/index.html',
+                create: './src/create/index.html',
+                status: './src/status/index.html',
+                about: './src/about/index.html'
+            }
         }
     }
 })
