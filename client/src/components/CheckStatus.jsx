@@ -8,9 +8,13 @@ function checkStatus() {
     }, []);
 
     const getStatus = async() =>{
-        const response = await fetch('http://127.0.0.1:8101/status', { method: 'GET' });
+        try {
+            const response = await fetch('/status', { method: 'GET' });
 
-        setTimeout(async () => setData(await response.json()), 1000);
+            setTimeout(async () => setData(await response.json()), 1000);
+        } catch(err) {
+            setData({ status: 'error' });
+        }
     }
       
     return (

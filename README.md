@@ -14,19 +14,14 @@
     git clone https://github.com/farhatraiyan/HackUTD2024Proj.git
     cd HackUTD2024Proj
 
-2. **Setup Flask api:**
+2. **Setup Flask server app:**
     ```bash
-    api_setup.bat
+    server_setup.bat
 
-3. **Setup React app:**
+3. **Setup React client:**
     ```bash
-    react_setup.bat
+    client_setup.bat
 
-4. **Start Flask api:**
+4. **Run the app:**
     ```bash
-    py api/api.py
-
-5. **Start React app:**
-    ```bash
-    cd my-react-app
-    npm start
+    py app.py

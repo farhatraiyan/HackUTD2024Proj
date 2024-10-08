@@ -1,6 +1,6 @@
 @echo off
 
 REM Setup React app
-cd my-react-app
+cd client
 npm install
-cd ..
+npm run build
