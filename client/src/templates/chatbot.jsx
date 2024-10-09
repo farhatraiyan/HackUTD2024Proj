@@ -7,6 +7,8 @@ import Navbar from '../components/Navbar.jsx'
 import '../styles/navbar.css';
 import '../styles/ChatBot.css';
 
+//had to make it's own css for chatbot because there were too many things interfering through index and app
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Chatbot />
