@@ -38,6 +38,10 @@ def serve_status():
 def serve_about():
     return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'about.html')
 
+@app.route('/chatbot/')
+def serve_chatbot():
+    return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'chatbot.html')
+
 @app.route('/assets/<path:filename>')
 def serve_assets(filename):
     return send_from_directory(os.path.join(app.root_path, 'dist/assets'), filename)

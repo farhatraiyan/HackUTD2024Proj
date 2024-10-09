@@ -6,6 +6,7 @@ function Navbar() {
             <li><a href = "/">Home</a></li>
             <li><a href = "/create/">Create Account</a></li>
             <li><a href = "/status/">Status</a></li>
+            <li><a href = "/chatbot/">ChatBot</a></li>
             <li><a href = "/about/">About</a></li>
         </ul>
     );
