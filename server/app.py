@@ -3,6 +3,7 @@ from flask_restful import Api
 from appDB import create_app, db
 from controllers.accounts import CreateAccount, DeleteAccount, ListAccounts, RetrieveAccountById, RetrieveAccountByUsername, UpdateAccount
 from controllers.utils import Status
+from controllers.ai import AIModel
 from flask_cors import CORS
 import os
 
@@ -21,6 +22,7 @@ api.add_resource(RetrieveAccountByUsername, '/accounts/<string:username>')
 api.add_resource(UpdateAccount, '/accounts/<int:id>')
 
 api.add_resource(Status, '/status')
+api.add_resource(AIModel, '/ai/')
 
 @app.route('/')
 def serve_home():
