@@ -14,6 +14,7 @@
   }
 
 .chat {
+    white-space: pre-wrap;
     flex:2;
     border-left: 1px solid #dddddd35;
     border-right: 1px solid #dddddd35;
@@ -52,7 +53,7 @@
     
             p{
                 padding: 20px;
-                background-color: #c2c2c2;
+                background-color: #626262;
                 border-radius: 10px;
             }
             }
@@ -66,7 +67,7 @@
             max-width:fit-content;
             display: flex;
             padding: 20px;
-            background-color: #c2c2c2;
+            background-color: #626262;
             border-radius: 10px;
           }
            

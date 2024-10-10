@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-function AI(e) {
+function AI() {
     //userprompt is what the user would put in
     const [userPrompt, setUserPrompt] = useState("");
 
@@ -11,6 +11,7 @@ function AI(e) {
     const [loading, setLoading] = useState(false);
   
     const onClick = async (e) => {
+        e.preventDefault();
         if(userPrompt == "")
             return;
         setLoading(true);
@@ -33,11 +34,17 @@ function AI(e) {
         setMessages(msgs);
         console.log(messages);
         setLoading(false);
-        
     }
+    const scroll = () => {
+        setTimeout(scrollTo(0, 1e10), 10000); 
+    }
+
+    //scrolls to the bottom of the page everytime a value changes
+    useEffect(() => {scroll()});
 //center is the main text area, and bottom is where the textbox is.
 //the messages.map maps the messages array to ai message and user message.
     return (
+        <form onSubmit={onClick}>
         <div className = 'chat'>
             <div className="center">
             <div className="message">
@@ -57,9 +64,10 @@ function AI(e) {
 
             <div className="bottom">
                 <input type='text' placeholder='Type your message...' value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)}/>
-                <button onClick={onClick} className='sendButton'>Send</button>
+                <button className='sendButton'>Send</button>
             </div>
         </div>
+        </form>
     )
 };
 
