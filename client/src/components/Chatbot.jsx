@@ -60,11 +60,17 @@ function AI() {
               </p>
             ))
           : ""}
+
+            <div className={loading ? "" : "hide"}>
+                <p>
+                    <i>{loading ? "Thinking" : ""}</i>
+                </p>
+            </div>
             </div>
             
 
             <div className="bottom">
-                <input type='text' placeholder='Type your message...' value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)}/>
+                <input type='text' disabled={loading} placeholder='Type your message...' value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)}/>
                 <button className='sendButton'>Send</button>
             </div>
         </div>
