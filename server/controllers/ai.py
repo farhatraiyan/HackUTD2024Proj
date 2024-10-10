@@ -21,9 +21,16 @@ class AIModel(Resource):
         #request.json is the user input sent from the frontend
         userPrompt = request.json
         hist = AIModel.construct_history_str()
+        
+        hasImage = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "Answer with Yes or No only. Check if the user's prompt is asking to generate an image or a picture"},
+                    {"role": "user", "content": userPrompt}]
+                )
 
         #checks if the prompt has the word image in it to determine whether to create image or not.
-        if "image" in userPrompt:
+        if "Yes" in hasImage.choices[0].message.content:
             image = client.images.generate(
             prompt = hist + userPrompt,
             n=1,
@@ -38,12 +45,12 @@ class AIModel(Resource):
             completion = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[
-                    {"role": "system", "content": "You are SpongeBob, answer every question like you are him."},
+                    {"role": "system", "content": "Don't talk so much."},
                     {"role": "user", "content": hist + userPrompt}]
                 )
             
             #this returns only the AI's response
-            ai = (completion.choices[0].message.content)
+            ai = completion.choices[0].message.content
             AIModel.update_history(ai, userPrompt)  
 
         #replace request.json with the ai's response
