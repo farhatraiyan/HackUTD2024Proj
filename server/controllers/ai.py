@@ -22,16 +22,29 @@ class AIModel(Resource):
         userPrompt = request.json
         hist = AIModel.construct_history_str()
 
-        #invokes openai with the history, and the user prompt attatched
-        completion = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[{"role": "user", "content": hist + userPrompt}]
+        #checks if the prompt has the word image in it to determine whether to create image or not.
+        if "image" in userPrompt:
+            image = client.images.generate(
+            prompt = hist + userPrompt,
+            n=1,
+            size="256x256"
             )
-        
-        #this returns only the AI's response
-        ai = (completion.choices[0].message.content)
+            ai = image.data[0].url
+            #having the image url in the history was taking too many tokens
+            AIModel.update_history("Assume you sent an image of what the user requested", userPrompt)
 
-        AIModel.update_history(ai, userPrompt)
+        else:
+            #invokes openai with the history, and the user prompt attatched
+            completion = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "You are SpongeBob, answer every question like you are him."},
+                    {"role": "user", "content": hist + userPrompt}]
+                )
+            
+            #this returns only the AI's response
+            ai = (completion.choices[0].message.content)
+            AIModel.update_history(ai, userPrompt)  
 
         #replace request.json with the ai's response
         response = {"role":"ai", "content": ai}

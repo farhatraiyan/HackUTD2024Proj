@@ -55,7 +55,8 @@ function AI() {
             {messages && messages.length
             ? messages.map((chat, index) => (
               <p key={index} className={chat.role === "user" ? "user_msg" : ""}>
-                <span className={chat.role === "user" ? "user_msg" : ""}>{chat.content}</span>
+                {/* Checks if the ai returned an image link or not. If it did, it sends the image as a response, and if not, it returns the ai's text response*/}
+                <span className={chat.role === "user" ? "user_msg" : ""}><img src = {chat.content.substring(0, 16) === "https://oaidalle" ?  chat.content : ""} onError = {chat.content}/>{chat.content.substring(0, 16) === "https://oaidalle" ?  "" : chat.content}</span>
               </p>
             ))
           : ""}
