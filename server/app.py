@@ -22,19 +22,19 @@ api.add_resource(Status, '/status')
 def serve_home():
     return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'home.html')
 
-@app.route('/create/')
+@app.route('/create')
 def serve_create_acc():
     return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'create.html')
 
-@app.route('/status/')
+@app.route('/checkStatus')
 def serve_status():
     return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'status.html')
 
-@app.route('/about/')
+@app.route('/about')
 def serve_about():
     return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'about.html')
 
-@app.route('/chatbot/')
+@app.route('/chatbot')
 def serve_chatbot():
     return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'chatbot.html')
 
