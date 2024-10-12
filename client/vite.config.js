@@ -12,7 +12,8 @@ export default defineConfig({
                 home: './src/views/home.html',
                 create: './src/views/create.html',
                 status: './src/views/status.html',
-                about: './src/views/about.html'
+                about: './src/views/about.html',
+                chatbot: './src/views/chatbot.html'
             }
         }
     }

@@ -1,7 +1,7 @@
 __pycache__/
 instance/
 venv/
-
+.env
 node_modules/
 package-lock.json
 dist/
