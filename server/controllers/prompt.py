@@ -1,8 +1,6 @@
 from langchain.prompts import PromptTemplate
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
-
-
 #Used for prompt engineering for future use
 prompt = ChatPromptTemplate.from_messages([
     ('system', """

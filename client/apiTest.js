@@ -1,9 +1,10 @@
+import assert from 'assert';
 const serviceUrl = 'http://127.0.0.1:8101';
 
 describe('Flask API', () => {
     let postedId;
 
-    it('GET /accounts should return any empty array before any accounts are posted', async () => {
+    it('GET /accounts should return status 404 before any accounts are posted', async () => {
         const req = {
             method: 'GET'
         }
@@ -12,6 +13,8 @@ describe('Flask API', () => {
         const resBody = await response.json();
 
         console.log(resBody);
+
+        assert.strictEqual(response.status, 404);
     });
 
     it('POST /accounts will post an account and return it without the password', async () => {
@@ -28,7 +31,13 @@ describe('Flask API', () => {
 
         const response = await fetch(`${serviceUrl}/accounts`, req);
         const resBody = await response.json();
+
         console.log(resBody);
+
+        assert.strictEqual(resBody.username, account.username);
+        assert(resBody.password === undefined);
+        assert(resBody.id !== undefined);
+
         postedId = resBody.id;
     });
 
@@ -41,6 +50,9 @@ describe('Flask API', () => {
         const resBody = await response.json();
 
         console.log(resBody);
+
+        assert.strictEqual(resBody.length, 1);
+        assert.strictEqual(resBody[0].id, postedId);
     });
 
     it('GET /accounts/:id should return just the posted user', async () => {
@@ -52,6 +64,8 @@ describe('Flask API', () => {
         const resBody = await response.json();
 
         console.log(resBody);
+
+        assert.strictEqual(resBody.id, postedId);
     });
 
     it('GET /accounts/:username should return just the posted user', async () => {
@@ -63,6 +77,8 @@ describe('Flask API', () => {
         const resBody = await response.json();
 
         console.log(resBody);
+
+        assert.strictEqual(resBody.id, postedId);
     });
 
     it('POST /accounts should fail to post account with same username', async () => {
@@ -79,7 +95,10 @@ describe('Flask API', () => {
 
         const response = await fetch(`${serviceUrl}/accounts`, req);
         const resBody = await response.json();
+
         console.log(resBody);
+
+        assert.strictEqual(response.status, 500);
     });
 
     it('PUT /accounts/:id should update the account username (and password)', async () => {
@@ -96,7 +115,12 @@ describe('Flask API', () => {
 
         const response = await fetch(`${serviceUrl}/accounts/${postedId}`, req);
         const resBody = await response.json();
+
         console.log(resBody);
+
+        assert.strictEqual(resBody.id, postedId);
+        assert.strictEqual(resBody.username, account.username);
+        assert(resBody.password === undefined);
     });
 
     it('DELETE /accounts/:id should delete the posted user account', async () => {
@@ -108,6 +132,8 @@ describe('Flask API', () => {
         const resBody = await response.json();
 
         console.log(resBody);
+
+        assert.strictEqual(resBody.id, postedId);
     });
 
     it('DELETE /accounts/:id should fail to delete non-existant account', async () => {
@@ -119,5 +145,7 @@ describe('Flask API', () => {
         const resBody = await response.json();
 
         console.log(resBody);
+
+        assert.strictEqual(response.status, 404);
     });
 });
