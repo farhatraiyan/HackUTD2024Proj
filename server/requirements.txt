@@ -4,3 +4,4 @@ flask_restful
 flask-cors
 openai
 python_dotenv
+langchain

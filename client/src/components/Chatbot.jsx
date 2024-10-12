@@ -19,7 +19,7 @@ function AI() {
         msgs.push({ role: "user", content: userPrompt });
         setMessages(msgs);
         setUserPrompt("");
-        const url = "http://127.0.0.1:8101/ai"
+        const url = "/ai"
         const options = {
             method: "POST",
             headers: {
