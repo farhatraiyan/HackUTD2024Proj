@@ -4,6 +4,7 @@ from appDB import create_app, db
 from controllers.accounts import Accounts
 from controllers.utils import Status
 from controllers.ai import AIModel
+from controllers.aiImage import ImageModel
 from flask_cors import CORS
 import os
 
@@ -17,6 +18,7 @@ with app.app_context():
 api.add_resource(Accounts, '/accounts', '/accounts/<int:id>', '/accounts/<string:username>')
 api.add_resource(Status, '/status')
 api.add_resource(AIModel, '/ai/')
+api.add_resource(ImageModel, '/aiImage/')
 
 @app.route('/')
 def serve_home():

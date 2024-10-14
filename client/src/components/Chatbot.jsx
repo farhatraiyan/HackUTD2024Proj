@@ -9,6 +9,8 @@ function AI() {
 
     //loading is when the ai is forming a response after the user sent their prompt
     const [loading, setLoading] = useState(false);
+
+    const [image, setImage] = useState(false);
   
     const onClick = async (e) => {
         e.preventDefault();
@@ -19,7 +21,8 @@ function AI() {
         msgs.push({ role: "user", content: userPrompt });
         setMessages(msgs);
         setUserPrompt("");
-        const url = "/ai"
+        
+        const url = (!image) ? "/ai" : "/aiImage";
         const options = {
             method: "POST",
             headers: {
@@ -44,7 +47,7 @@ function AI() {
 //center is the main text area, and bottom is where the textbox is.
 //the messages.map maps the messages array to ai message and user message.
     return (
-        <form onSubmit={onClick}>
+        
         <div className = 'chat'>
             <div className="center">
             <div className="message">
@@ -70,11 +73,15 @@ function AI() {
             
 
             <div className="bottom">
-                <input type='text' disabled={loading} placeholder='Type your message...' value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)}/>
-                <button className='sendButton'>Send</button>
+                <label>Image:</label>
+                <button className={image == true ? 'imageOn': 'imageOff'} onClick={() => setImage(!image)}></button>
+                <form onSubmit={onClick}>
+                <input type='text' placeholder='Type your message...' value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)}/>
+                <button className='sendButton' disabled={loading}>Send</button>
+                </form>
             </div>
         </div>
-        </form>
+        
     )
 };
 
