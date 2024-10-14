@@ -87,7 +87,7 @@
         width: 97vw;
         padding: 20px;
         align-items: center;
-        /*justify-content: space-between;*/
+        justify-content: space-between;
         border-top: 1px solid #dddddd35;
         gap: 15px;
         margin-top:auto;
@@ -117,7 +117,6 @@
         border-radius: 10px;
         padding: 20px;
         font-size: 16px;
-        width: 65vw;
     }
     
     button {

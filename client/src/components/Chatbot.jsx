@@ -70,16 +70,15 @@ function AI() {
                 </p>
             </div>
             </div>
-            
-
-            <div className="bottom">
-                <label>Image:</label>
-                <button className={image == true ? 'imageOn': 'imageOff'} onClick={() => setImage(!image)}></button>
-                <form onSubmit={onClick}>
-                <input type='text' placeholder='Type your message...' value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)}/>
-                <button className='sendButton' disabled={loading}>Send</button>
-                </form>
-            </div>
+            <form onSubmit={onClick}>
+                <div className="bottom">
+                    <label>Image:</label>
+                    <button type = "button" className={image == true ? 'imageOn': 'imageOff'} onClick={() => setImage(!image)}></button>
+                    <input type='text' placeholder='Type your message...' value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)}/>
+                    <button className='sendButton' disabled={loading}>Send</button>
+                
+                </div>
+            </form>
         </div>
         
     )
