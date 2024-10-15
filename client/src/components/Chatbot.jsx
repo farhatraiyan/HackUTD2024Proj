@@ -21,8 +21,8 @@ function AI() {
         msgs.push({ role: "user", content: userPrompt });
         setMessages(msgs);
         setUserPrompt("");
-        
-        const url = (!image) ? "/ai" : "/aiImage";
+
+        const url = image ? "/ai?image=true" : "/ai";
         const options = {
             method: "POST",
             headers: {
