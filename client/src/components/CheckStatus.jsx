@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+const server_url = import.meta.env.VITE_SERVER_URL || '';
+
 function checkStatus() {
     const [data, setData] = useState({ status: 'loading' });
 
@@ -9,7 +11,7 @@ function checkStatus() {
 
     const getStatus = async() =>{
         try {
-            const response = await fetch('/status', { method: 'GET' });
+            const response = await fetch(`${server_url}/status`, { method: 'GET' });
 
             setTimeout(async () => setData(await response.json()), 1000);
         } catch(err) {

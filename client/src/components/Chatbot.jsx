@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+const server_url = import.meta.env.VITE_SERVER_URL || '';
+
 function AI() {
     //userprompt is what the user would put in
     const [userPrompt, setUserPrompt] = useState("");
@@ -23,6 +25,7 @@ function AI() {
         setUserPrompt("");
 
         const url = image ? "/ai?image=true" : "/ai";
+
         const options = {
             method: "POST",
             headers: {
@@ -30,7 +33,7 @@ function AI() {
             },
             body: JSON.stringify(userPrompt)
         }
-        const response = await fetch(url, options);
+        const response = await fetch(`${server_url}${url}`, options);
         const data = await response.json();
         console.log(data)
         msgs.push(data);
