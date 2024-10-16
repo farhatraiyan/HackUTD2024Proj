@@ -33,13 +33,21 @@ class AIModel(Resource):
         #request.json is the user input sent from the frontend
         userPrompt = request.json
 
+        #checks if the user input is empty
+        if not userPrompt:
+            return {'message': f'Invalid input.'}, 400
+
         #checks for the image parameter in the request
         image_param = request.args.get('image')
 
-        if image_param:
-            return AIModel.image(userPrompt)
+        try:
+            if image_param:
+                return AIModel.image(userPrompt)
 
-        return AIModel.text(userPrompt)
+            return AIModel.text(userPrompt)
+        
+        except Exception as e:
+            abort(500, description='Failed to generate AI response.')
 
     def text(userPrompt):
         #using these for testing, ignore them
