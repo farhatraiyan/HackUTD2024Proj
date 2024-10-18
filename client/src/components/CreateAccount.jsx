@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+const server_url = import.meta.env.VITE_SERVER_URL || '';
+
 function createAccount(e) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -7,7 +9,7 @@ function createAccount(e) {
     const [refresh, setRefresh] = useState(false);
 
     const getAccounts = async () => {
-        const url = "http://127.0.0.1:8101/accounts"
+        const url = `${server_url}/accounts`;
         const options = {
             method: "GET"
         }
@@ -29,7 +31,7 @@ function createAccount(e) {
             username,
             password
         }
-        const url = "http://127.0.0.1:8101/accounts"
+        const url = `${server_url}/accounts`;
         const options = {
             method: "POST",
             headers: {
@@ -62,12 +64,12 @@ function createAccount(e) {
                     ))}
                 </div>
                 <label htmlFor="Username">Username:</label>
-                <input type = "text" id = "username" value = {username} onChange = {(e) => setUsername(e.target.value)}></input>
+                <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)}></input>
 
                 <label htmlFor="Password">Password:</label>
-                <input type = "text" id = "password" value = {password} onChange = {(e) => setPassword(e.target.value)}></input>
+                <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
             </div>
-            <button type = "submit">Create Account</button>
+            <button type="submit">Create Account</button>
         </form>
     );
 };
