@@ -21,10 +21,8 @@ function AI() {
 
         setLoading(true);
 
-        let msgs = messages;
-        msgs.push({ role: "user", content: userPrompt });
-
-        setMessages(msgs);
+        const newMessages = [...messages, { role: "user", content: userPrompt }];
+        setMessages(newMessages);
         setUserPrompt("");
 
         const url = image ? "/ai?image=true" : "/ai";
@@ -39,39 +37,47 @@ function AI() {
         const response = await fetch(`${server_url}${url}`, options);
         const data = await response.json();
 
-        msgs.push(data);
-        setMessages(msgs);
+        setMessages([...newMessages, data]);
         setLoading(false);
     }
 
     const scroll = () => {
-        setTimeout(scrollTo(0, 1e10), 10000); 
-    }
+        window.scrollTo(0, document.body.scrollHeight);
+    };
 
     //scrolls to the bottom of the page everytime a value changes
-    useEffect(() => {scroll()});
+    useEffect(() => {
+        scroll();
+    }, [messages]);
 
     //center is the main text area, and bottom is where the textbox is.
     //the messages.map maps the messages array to ai message and user message.
     return (
-        <div className = 'chat'>
+        <div className="chat">
             <div className="center">
-                {messages && messages.length ? messages.map((chat, index) => (
+                {messages.map((chat, index) => (
                     <p key={index} className={chat.role === "user" ? "user_msg" : ""}>
-                        {/* Checks if the ai returned an image link or not. If it did, it sends the image as a response, and if not, it returns the ai's text response*/}
-                        <span className={chat.role === "user" ? "user_msg" : ""}><img src = {chat.content.substring(0, 16) === "https://oaidalle" ?  chat.content : ""} onError = {chat.content}/>{chat.content.substring(0, 16) === "https://oaidalle" ?  "" : chat.content}</span>
+                        <span className={chat.role === "user" ? "user_msg" : ""}>
+                            {chat.content.startsWith("https://oaidalle") ? (
+                                <img src={chat.content} alt="AI generated" />
+                            ) : (
+                                chat.content
+                            )}
+                        </span>
                     </p>
-                )) : ""}
-                <div className={loading ? "" : "hide"}>
-                    <p>
-                        <i>{loading ? "Thinking" : ""}</i>
-                    </p>
-                </div>
+                ))}
+                {loading && (
+                    <div>
+                        <p>
+                            <i>Thinking...</i>
+                        </p>
+                    </div>
+                )}
             </div>
             <form onSubmit={onClick}>
                 <div className="bottom">
                     <label>Image:</label>
-                    <button type = "button" className={image == true ? 'imageOn': 'imageOff'} onClick={() => setImage(!image)}></button>
+                    <button type="button" className={image ? 'imageOn': 'imageOff'} onClick={() => setImage(!image)}></button>
                     <input type='text' placeholder='Type your message...' value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)}/>
                     <button className='sendButton' disabled={loading}>Send</button>
                 </div>
