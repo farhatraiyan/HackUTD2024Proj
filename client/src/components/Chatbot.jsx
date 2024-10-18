@@ -17,8 +17,7 @@ function AI() {
     const onClick = async (e) => {
         e.preventDefault();
 
-        if(userPrompt == "")
-            return;
+        if (userPrompt == "") return;
 
         setLoading(true);
 
