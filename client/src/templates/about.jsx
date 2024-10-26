@@ -1,14 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import AboutPage from '../components/AboutPage.jsx'
+import CardComponent from '../components/App.jsx'
 import Navbar from '../components/Navbar.jsx'
-import '../styles/index.css'
-import '../styles/App.css';
-import '../styles/navbar.css';
+import '../styles/tailwind.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AboutPage />
+    <CardComponent />
   </StrictMode>,
 )
 
