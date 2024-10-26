@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import Chatbot from '../components/Chatbot.jsx'
 import Navbar from '../components/Navbar.jsx'
-import '../styles/tailwind.css';
+import './tailwind.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
