@@ -1,15 +1,14 @@
-import React from 'react';
+import { Navbar } from "flowbite-react";
 
-function Navbar() { 
+export default function NavbarComponent() {
     return (
-        <ul>
-            <li><a href = "/">Home</a></li>
-            <li><a href = "/create">Create Account</a></li>
-            <li><a href = "/checkStatus">Status</a></li>
-            <li><a href = "/chatbot">ChatBot</a></li>
-            <li><a href = "/about">About</a></li>
-        </ul>
+        <Navbar className="bg-slate-800 pt-3 pb-3" fluid>
+            <Navbar.Collapse>
+                <Navbar.Link className="text-white" href="/">Home</Navbar.Link>
+                <Navbar.Link className="text-white" href="/create">Create Account</Navbar.Link>
+                <Navbar.Link className="text-white" href="/chatbot">Chatbot</Navbar.Link>
+                <Navbar.Link className="text-white" href="/about">About</Navbar.Link>
+            </Navbar.Collapse>
+        </Navbar>
     );
 }
-
-export default Navbar;
