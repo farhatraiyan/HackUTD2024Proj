@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Button, Card, TextInput, ToggleSwitch } from "flowbite-react";
 
 const server_url = import.meta.env.VITE_SERVER_URL || '';
 
@@ -13,7 +14,7 @@ function AI() {
     const [loading, setLoading] = useState(false);
 
     const [image, setImage] = useState(false);
-  
+
     const onClick = async (e) => {
         e.preventDefault();
 
@@ -53,35 +54,35 @@ function AI() {
     //center is the main text area, and bottom is where the textbox is.
     //the messages.map maps the messages array to ai message and user message.
     return (
-        <div className="chat">
+        <div className="chat pt-4">
             <div className="center">
-                {messages.map((chat, index) => (
-                    <p key={index} className={chat.role === "user" ? "user_msg" : ""}>
-                        <span className={chat.role === "user" ? "user_msg" : ""}>
-                            {chat.content.startsWith("https://oaidalle") ? (
-                                <img src={chat.content} alt="AI generated" />
+                {messages.map(message => (
+                    <div className={`flex ${message.role === "user" ? 'justify-end' : ''} m-2`}>
+                        <Card className="max-w-96">
+                            {message.content.startsWith("https://oaidalle") ? (
+                                <img src={message.content} alt="AI generated" />
                             ) : (
-                                chat.content
+                                <p>{message.content}</p>
                             )}
-                        </span>
-                    </p>
+                        </Card>
+                    </div>
                 ))}
                 {loading && (
-                    <div>
+                    <Card className="w-32">
                         <p>
                             <i>Thinking...</i>
                         </p>
-                    </div>
+                    </Card>
                 )}
             </div>
-            <form onSubmit={onClick}>
-                <div className="bottom">
-                    <label>Image:</label>
-                    <button type="button" className={image ? 'imageOn': 'imageOff'} onClick={() => setImage(!image)}></button>
-                    <input type='text' placeholder='Type your message...' value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)}/>
-                    <button className='sendButton' disabled={loading}>Send</button>
-                </div>
-            </form>
+            <div className="flex justify-center w-full absolute bottom-0 p-4 bg-slate-800">
+                <form onSubmit={onClick} className="flex items-center space-x-4">
+                    <label className='text-white'>Image: </label>
+                    <ToggleSwitch checked={image} onClick={() => setImage(!image)} />
+                    <TextInput className='w-96' type="text" placeholder="Type your message..." value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)} />
+                    <Button className="sendButton" isProcessing={loading}>Send</Button>
+                </form>
+            </div>
         </div>
     );
 };
