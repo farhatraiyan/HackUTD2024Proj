@@ -34,7 +34,6 @@ def delete_account(id):
 @app.route('/accounts', methods=['GET'])
 @Accounts.list_accounts
 def list_accounts():
-    print('get_accounts')
     return g.accounts
 
 @app.route('/accounts/<string:id>', methods=['GET'])
