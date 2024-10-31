@@ -15,6 +15,9 @@ CORS(app)
 with app.app_context():
     db.create_all()
 
+def serve_page(page):
+    return send_from_directory(os.path.join(app.root_path, 'dist/views'), page)
+
 api.add_resource(Status, '/status')
 api.add_resource(AIModel, '/ai')
 
@@ -46,23 +49,23 @@ def update_account(id):
 
 @app.route('/')
 def serve_home():
-    return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'home.html')
+    return serve_page('home.html')
 
 @app.route('/create')
 def serve_create_acc():
-    return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'create.html')
+    return serve_page('create.html')
 
 @app.route('/checkStatus')
 def serve_status():
-    return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'status.html')
+    serve_page('status.html')
 
 @app.route('/about')
 def serve_about():
-    return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'about.html')
+    return serve_page('about.html')
 
 @app.route('/chatbot')
 def serve_chatbot():
-    return send_from_directory(os.path.join(app.root_path, 'dist/views'), 'chatbot.html')
+    return serve_page('chatbot.html')
 
 @app.route('/assets/<path:filename>')
 def serve_assets(filename):
