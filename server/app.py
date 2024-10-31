@@ -22,7 +22,7 @@ api.add_resource(AIModel, '/ai')
 def create_account():
     return g.account
 
-@app.route('/accounts/<int:id>', methods=['DELETE'])
+@app.route('/accounts/<string:id>', methods=['DELETE'])
 @Accounts.delete_account
 def delete_account(id):
     return g.account
@@ -33,17 +33,12 @@ def list_accounts():
     print('get_accounts')
     return g.accounts
 
-@app.route('/accounts/<int:id>', methods=['GET'])
-@Accounts.retrieve_account_by_id
-def retrieve_account_by_id(id):
+@app.route('/accounts/<string:id>', methods=['GET'])
+@Accounts.retrieve_account
+def retrieve_account(id):
     return g.account
 
-@app.route('/accounts/<string:username>', methods=['GET'])
-@Accounts.retrieve_account_by_username
-def retrieve_account_by_username(username):
-    return g.account
-
-@app.route('/accounts/<int:id>', methods=['PUT'])
+@app.route('/accounts/<string:id>', methods=['PUT'])
 @Accounts.update_account
 def update_account(id):
     return g.account
