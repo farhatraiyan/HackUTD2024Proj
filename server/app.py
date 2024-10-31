@@ -1,11 +1,12 @@
+from appDB import create_app, db
 from flask import send_from_directory, g
 from flask_restful import Api
-from appDB import create_app, db
+from flask_cors import CORS
+import os
+
 import controllers.accounts as Accounts
 from controllers.utils import Status
 from controllers.ai import AIModel
-from flask_cors import CORS
-import os
 
 app = create_app()
 api = Api(app)
