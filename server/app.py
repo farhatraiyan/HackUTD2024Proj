@@ -1,7 +1,7 @@
-from flask import send_from_directory
+from flask import send_from_directory, g
 from flask_restful import Api
 from appDB import create_app, db
-from controllers.accounts import Accounts
+import controllers.accounts as Accounts
 from controllers.utils import Status
 from controllers.ai import AIModel
 from flask_cors import CORS
@@ -14,9 +14,39 @@ CORS(app)
 with app.app_context():
     db.create_all()
 
-api.add_resource(Accounts, '/accounts', '/accounts/<int:id>', '/accounts/<string:username>')
 api.add_resource(Status, '/status')
 api.add_resource(AIModel, '/ai')
+
+@app.route('/accounts', methods=['POST'])
+@Accounts.create_account
+def create_account():
+    return g.account
+
+@app.route('/accounts/<int:id>', methods=['DELETE'])
+@Accounts.delete_account
+def delete_account(id):
+    return g.account
+
+@app.route('/accounts', methods=['GET'])
+@Accounts.list_accounts
+def list_accounts():
+    print('get_accounts')
+    return g.accounts
+
+@app.route('/accounts/<int:id>', methods=['GET'])
+@Accounts.retrieve_account_by_id
+def retrieve_account_by_id(id):
+    return g.account
+
+@app.route('/accounts/<string:username>', methods=['GET'])
+@Accounts.retrieve_account_by_username
+def retrieve_account_by_username(username):
+    return g.account
+
+@app.route('/accounts/<int:id>', methods=['PUT'])
+@Accounts.update_account
+def update_account(id):
+    return g.account
 
 @app.route('/')
 def serve_home():
