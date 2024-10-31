@@ -1,7 +1,8 @@
-from flask import request, jsonify, abort
-from flask_restful import Resource
 from appDB import db
 from models.accounts import Account
+
+from flask import request, jsonify, abort, g
+from decorator import decorator
 
 def retrieveAccount(params):
     account = Account.query.filter_by(**params).first()
@@ -11,48 +12,8 @@ def retrieveAccount(params):
 
     return None
 
-class Accounts(Resource):
-    def delete(self, id):
-        if not id:
-            return {'message': f'Poor request'}, 400
-
-        try:
-            account = retrieveAccount({'id': id})
-
-            if not account:
-                return {'message': f'Account not found'}, 404
-
-            db.session.delete(account)
-            db.session.commit()
-            return jsonify(account.to_dict())
-
-        except Exception as e:
-            db.session.rollback()
-            abort(500, description='Failed to delete account.')
-
-    def get(self, id=None, username=None):
-        accounts = None
-
-        try:
-            if id:
-                accounts = retrieveAccount({'id': id})
-            elif username:
-                accounts = retrieveAccount({'username': username})
-            else:
-                accounts = Account.query.all()
-
-            if not accounts:
-                return {'message': 'No accounts found'}, 404
-
-            if isinstance(accounts, Account):
-                return jsonify(accounts.to_dict())
-
-            return jsonify([account.to_dict() for account in accounts])
-
-        except Exception as e:
-            abort(500, description='Failed to retrieve accounts.')
-
-    def post(self):
+@decorator
+def create_account(f):
         account_data = request.json
 
         if not account_data:
@@ -62,7 +23,8 @@ class Accounts(Resource):
             new_account = Account(**account_data)
             db.session.add(new_account)
             db.session.commit()
-            return jsonify(new_account.to_dict())
+            g.account = jsonify(new_account.to_dict())
+            return f()
 
         except Exception as e:
             db.session.rollback()
@@ -72,7 +34,58 @@ class Accounts(Resource):
 
             abort(500, description='Error: failed to create account.')
 
-    def put(self, id):
+@decorator
+def delete_account(f, id):
+    if not id:
+        return {'message': f'Poor request'}, 400
+
+    try:
+        account = retrieveAccount({'id': id})
+
+        if not account:
+            return {'message': f'Account not found'}, 404
+
+        db.session.delete(account)
+        db.session.commit()
+        g.account = jsonify(account.to_dict())
+        return f(id)
+
+    except Exception as e:
+        db.session.rollback()
+        abort(500, description='Failed to delete account.')
+
+@decorator
+def list_accounts(f):
+    accounts = Account.query.all()
+
+    if not accounts:
+        return {'message': 'No accounts found'}, 404
+
+    g.accounts = jsonify([account.to_dict() for account in accounts])
+    return f()
+
+@decorator
+def retrieve_account_by_id(f, id):
+    account = retrieveAccount({'id': id})
+
+    if not account:
+        return {'message': f'Account not found'}, 404
+
+    g.account = jsonify(account.to_dict())
+    return f(id)
+
+@decorator
+def retrieve_account_by_username(f, username):
+    account = retrieveAccount({'username': username})
+
+    if not account:
+        return {'message': f'Account not found'}, 404
+
+    g.account = jsonify(account.to_dict())
+    return f(username)
+
+@decorator
+def update_account(f, id):
         if not id:
             return {'message': f'Poor request.'}, 400
 
@@ -94,7 +107,8 @@ class Accounts(Resource):
                 account.password = account_data['password']
 
             db.session.commit()
-            return jsonify(account.to_dict())
+            g.account = jsonify(account.to_dict())
+            return f(id)
 
         except Exception as e:
             db.session.rollback()
