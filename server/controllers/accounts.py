@@ -65,24 +65,19 @@ def list_accounts(f):
     return f()
 
 @decorator
-def retrieve_account_by_id(f, id):
-    account = retrieveAccount({'id': id})
+def retrieve_account(f, id):
+    account = None
+
+    if len(id) != 36:
+        account = retrieveAccount({'username': id})
+    else:
+        account = retrieveAccount({'id': id})
 
     if not account:
         return {'message': f'Account not found'}, 404
 
     g.account = jsonify(account.to_dict())
     return f(id)
-
-@decorator
-def retrieve_account_by_username(f, username):
-    account = retrieveAccount({'username': username})
-
-    if not account:
-        return {'message': f'Account not found'}, 404
-
-    g.account = jsonify(account.to_dict())
-    return f(username)
 
 @decorator
 def update_account(f, id):
