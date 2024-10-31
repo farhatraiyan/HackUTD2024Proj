@@ -98,7 +98,7 @@ describe('Flask API', () => {
 
         console.log(resBody);
 
-        assert.strictEqual(response.status, 500);
+        assert.strictEqual(response.status, 409);
     });
 
     it('PUT /accounts/:id should update the account username (and password)', async () => {
