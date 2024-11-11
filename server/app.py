@@ -1,5 +1,5 @@
 from appDB import create_app, db
-from flask import send_from_directory, g
+from flask import send_from_directory, g, jsonify
 from flask_restful import Api
 from flask_cors import CORS
 import os
@@ -32,9 +32,17 @@ def delete_account(id):
     return g.account
 
 @app.route('/accounts', methods=['GET'])
-@Accounts.list_accounts
 def list_accounts():
-    return g.accounts
+    try:
+        accounts = Accounts.list_accounts(['username'])
+
+        if isinstance(accounts, tuple):
+            err, statusCode = accounts
+            return { 'message': err }, statusCode
+
+        return jsonify(accounts)
+    except Exception as e:
+        return { 'message': 'Something went terribly wrong!' }, 500
 
 @app.route('/accounts/<string:id>', methods=['GET'])
 @Accounts.retrieve_account

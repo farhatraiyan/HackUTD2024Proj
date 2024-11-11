@@ -66,14 +66,16 @@ def delete_account(f, id):
         db.session.rollback()
         abort(500, description='Failed to delete account.')
 
-@decorator
-def list_accounts(f, fields = ['username']):
+def list_accounts(fields):
+    if fields is None or not isinstance(fields, list):
+        return 'Poor request.', 400
+
     fields = get_fields(fields)
 
     accounts = Account.query.with_entities(*fields).all()
 
     if not accounts:
-        return {'message': 'No accounts found'}, 404
+        return 'No account found.', 404
 
     # Note: Probably not the best way to do this
     column_names = [field.key for field in fields]
@@ -83,8 +85,7 @@ def list_accounts(f, fields = ['username']):
         for account in accounts
     ]
 
-    g.accounts = jsonify(result)
-    return f()
+    return result
 
 @decorator
 def retrieve_account(f, id):
