@@ -1,10 +1,6 @@
-from flask import request, jsonify, abort
-from flask_restful import Resource
-from appDB import db
 from openai import OpenAI
 from dotenv import load_dotenv, find_dotenv
 from langchain.memory import ChatMessageHistory
-import os
 
 #the api key is in the .env file
 load_dotenv(find_dotenv())
@@ -12,8 +8,6 @@ load_dotenv(find_dotenv())
 client = OpenAI()
 history = ChatMessageHistory()
 
-
-    
 #Adds messages to the history
 def update_history(ai_response, user_input):
     if len(history.messages) > 20:
@@ -28,27 +22,7 @@ def construct_history_str():
     hist_str = ''.join(f"{m.type}: {m.content}\n" for m in history.messages)
     return hist_str
 
-class AIModel(Resource):
-    def post(self):
-        #request.json is the user input sent from the frontend
-        userPrompt = request.json
-
-        #checks if the user input is empty
-        if not userPrompt:
-            return {'message': f'Invalid input.'}, 400
-
-        #checks for the image parameter in the request
-        image_param = request.args.get('image')
-
-        try:
-            if image_param:
-                return AIModel.image(userPrompt)
-
-            return AIModel.text(userPrompt)
-        
-        except Exception as e:
-            abort(500, description='Failed to generate AI response.')
-
+class AIModel():
     def text(userPrompt):
         #using these for testing, ignore them
         #--a={"role":"ai", "content": "asdf"}
@@ -71,7 +45,7 @@ class AIModel(Resource):
         #replace request.json with the ai's response
         response = {"role":"ai", "content": ai}
         
-        return jsonify(response)
+        return response
     
     def image(userPrompt):
         #using these for testing, ignore them
