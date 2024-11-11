@@ -1,7 +1,7 @@
 # Import DB and DB initializer
 from appDB import create_app, db
 
-# Import Flask CORS to handle Frontend requests
+# Import Flask CORS to handle Frontend dev requests
 from flask_cors import CORS
 
 # Import Blueprints (app routes are defined within these)
@@ -9,9 +9,9 @@ from routes.accounts import accounts_bp
 from routes.ai import ai_bp
 from routes.pages import pages_bp
 
-# Initialize Flask app, API, and CORS, DB
+# Initialize Flask app, DB
 app = create_app()
-CORS(app)
+CORS(app) # Heavily rethink this in production; this is a security risk; only for frontend dev
 
 # Create DB tables if they don't exist
 with app.app_context():
