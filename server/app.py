@@ -37,9 +37,17 @@ def create_account():
         return { 'message': 'Something went terribly wrong!' }, 500
 
 @app.route('/accounts/<string:id>', methods=['DELETE'])
-@Accounts.delete_account
 def delete_account(id):
-    return g.account
+    try:
+        account = Accounts.delete_account(id)
+
+        if isinstance(account, tuple):
+            err, statusCode = account
+            return { 'message': err }, statusCode
+
+        return jsonify(account)
+    except Exception as e:
+        return { 'message': 'Something went terribly wrong!' }, 500
 
 @app.route('/accounts', methods=['GET'])
 def list_accounts():

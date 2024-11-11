@@ -31,8 +31,8 @@ def create_account(account_data):
             new_account = Account(**account_data)
             db.session.add(new_account)
             db.session.commit()
-            return new_account.to_dict()
 
+            return new_account.to_dict()
         except Exception as e:
             db.session.rollback()
 
@@ -41,25 +41,24 @@ def create_account(account_data):
 
             return 'Failed to create account.', 500
 
-@decorator
-def delete_account(f, id):
+def delete_account(id):
     if not id:
-        return {'message': f'Poor request'}, 400
+        return 'Poor request.', 400
 
     try:
         account = retrieveAccount({'id': id})
 
         if not account:
-            return {'message': f'Account not found'}, 404
+            return 'Account not found.', 404
 
         db.session.delete(account)
         db.session.commit()
-        g.account = jsonify(account.to_dict())
-        return f(id)
 
+        return account.to_dict()
     except Exception as e:
         db.session.rollback()
-        abort(500, description='Failed to delete account.')
+
+        return 'Failed to delete account.', 500
 
 def list_accounts(fields):
     if fields is None or not isinstance(fields, list):
