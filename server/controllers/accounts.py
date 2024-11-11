@@ -1,9 +1,6 @@
 from appDB import db
 from models.accounts import Account
 
-from flask import request, jsonify, abort, g
-from decorator import decorator
-
 def retrieveAccount(params):
     account = Account.query.filter_by(**params).first()
 
