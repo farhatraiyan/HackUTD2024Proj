@@ -5,7 +5,7 @@ from flask_restful import Api
 from flask_cors import CORS
 import os
 
-from controllers.accounts import Accounts
+from routes.accounts import accounts_bp
 from controllers.utils import Status
 from controllers.ai import AIModel
 
@@ -22,74 +22,7 @@ def serve_page(page):
 api.add_resource(Status, '/status')
 api.add_resource(AIModel, '/ai')
 
-@app.route('/accounts', methods=['POST'])
-def create_account():
-    try:
-        account_data = request.json
-
-        account = Accounts.create_account(account_data)
-
-        if isinstance(account, tuple):
-            err, statusCode = account
-            return { 'message': err }, statusCode
-
-        return jsonify(account)
-    except Exception as e:
-        return { 'message': 'Something went terribly wrong!' }, 500
-
-@app.route('/accounts/<string:id>', methods=['DELETE'])
-def delete_account(id):
-    try:
-        account = Accounts.delete_account(id)
-
-        if isinstance(account, tuple):
-            err, statusCode = account
-            return { 'message': err }, statusCode
-
-        return jsonify(account)
-    except Exception as e:
-        return { 'message': 'Something went terribly wrong!' }, 500
-
-@app.route('/accounts', methods=['GET'])
-def list_accounts():
-    try:
-        accounts = Accounts.list_accounts(['username'])
-
-        if isinstance(accounts, tuple):
-            err, statusCode = accounts
-            return { 'message': err }, statusCode
-
-        return jsonify(accounts)
-    except Exception as e:
-        return { 'message': 'Something went terribly wrong!' }, 500
-
-@app.route('/accounts/<string:id>', methods=['GET'])
-def retrieve_account(id):
-    try:
-        account = Accounts.retrieve_account(id)
-
-        if isinstance(account, tuple):
-            err, statusCode = account
-            return { 'message': err }, statusCode
-
-        return jsonify(account)
-    except Exception as e:
-        return { 'message': 'Something went terribly wrong!' }, 500
-
-@app.route('/accounts/<string:id>', methods=['PUT'])
-def update_account(id):
-    try:
-        account_data = request.json
-
-        account = Accounts.update_account(id, account_data)
-
-        if isinstance(account, tuple):
-            err, statusCode = account
-            return { 'message': err }, statusCode
-
-        return jsonify(account)
-    except Exception as e:
-        return { 'message': 'Something went terribly wrong!' }, 500
+app.register_blueprint(accounts_bp)
 
 @app.route('/')
 def serve_home():
