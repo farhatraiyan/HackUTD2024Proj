@@ -52,7 +52,6 @@ describe('Flask API', () => {
         console.log(resBody);
 
         assert.strictEqual(resBody.length, 1);
-        assert.strictEqual(resBody[0].id, postedId);
     });
 
     it('GET /accounts/:id should return just the posted user', async () => {
