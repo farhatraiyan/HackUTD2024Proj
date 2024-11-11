@@ -12,7 +12,5 @@ class Account(db.Model):
         self.password = password
 
     def to_dict(self):
-        return {
-            'id': self.id,
-            'username': self.username,
-        }
+        attributes = ['id', 'username']
+        return {attr: getattr(self, attr) for attr in attributes if hasattr(self, attr)}
