@@ -63,14 +63,32 @@ def list_accounts():
         return { 'message': 'Something went terribly wrong!' }, 500
 
 @app.route('/accounts/<string:id>', methods=['GET'])
-@Accounts.retrieve_account
 def retrieve_account(id):
-    return g.account
+    try:
+        account = Accounts.retrieve_account(id)
+
+        if isinstance(account, tuple):
+            err, statusCode = account
+            return { 'message': err }, statusCode
+
+        return jsonify(account)
+    except Exception as e:
+        return { 'message': 'Something went terribly wrong!' }, 500
 
 @app.route('/accounts/<string:id>', methods=['PUT'])
-@Accounts.update_account
 def update_account(id):
-    return g.account
+    try:
+        account_data = request.json
+
+        account = Accounts.update_account(id, account_data)
+
+        if isinstance(account, tuple):
+            err, statusCode = account
+            return { 'message': err }, statusCode
+
+        return jsonify(account)
+    except Exception as e:
+        return { 'message': 'Something went terribly wrong!' }, 500
 
 @app.route('/')
 def serve_home():

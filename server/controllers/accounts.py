@@ -81,8 +81,7 @@ def list_accounts(fields):
 
     return result
 
-@decorator
-def retrieve_account(f, id):
+def retrieve_account(id):
     account = None
 
     if len(id) != 36:
@@ -91,41 +90,33 @@ def retrieve_account(f, id):
         account = retrieveAccount({'id': id})
 
     if not account:
-        return {'message': f'Account not found'}, 404
+        return 'Account not found.', 404
+    
+    return account.to_dict()
 
-    g.account = jsonify(account.to_dict())
-    return f(id)
+def update_account(id, account_data):
+    if not id or not account_data:
+        return 'Poor request.', 400
+    
+    try:
+        account = retrieveAccount({'id': id})
 
-@decorator
-def update_account(f, id):
-        if not id:
-            return {'message': f'Poor request.'}, 400
+        if not account:
+            return 'Account not found.', 404
 
-        account_data = request.get_json()
+        if 'username' in account_data:
+            account.username = account_data['username']
 
-        if not account_data:
-            return {'message': f'Invalid input.'}, 400
+        if 'password' in account_data:
+            account.password = account_data['password']
 
-        try:
-            account = retrieveAccount({'id': id})
+        db.session.commit()
 
-            if not account:
-                return {'message': f'Account not found'}, 404
+        return account.to_dict()
+    except Exception as e:
+        db.session.rollback()
 
-            if 'username' in account_data:
-                account.username = account_data['username']
+        if 'UNIQUE constraint failed' in str(e):
+            return 'Error: conflict.', 409
 
-            if 'password' in account_data:
-                account.password = account_data['password']
-
-            db.session.commit()
-            g.account = jsonify(account.to_dict())
-            return f(id)
-
-        except Exception as e:
-            db.session.rollback()
-
-            if 'UNIQUE constraint failed' in str(e):
-                return {'message': f'Error: conflict.'}, 409
-
-            abort(500, description='Failed to update account.')
+        return 'Failed to update account.', 500
