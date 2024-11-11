@@ -1,5 +1,6 @@
 from appDB import db
 from models.accounts import Account
+from sqlalchemy.orm import load_only
 
 from flask import request, jsonify, abort, g
 from decorator import decorator
@@ -11,6 +12,17 @@ def retrieveAccount(params):
         return account
 
     return None
+
+def get_fields(fields):
+    return_list = []
+
+    if 'username' in fields:
+        return_list.append(Account.username)
+    
+    if 'id' in fields:
+        return_list.append(Account.id)
+    
+    return return_list
 
 @decorator
 def create_account(f):
@@ -55,13 +67,23 @@ def delete_account(f, id):
         abort(500, description='Failed to delete account.')
 
 @decorator
-def list_accounts(f):
-    accounts = Account.query.all()
+def list_accounts(f, fields = ['username']):
+    fields = get_fields(fields)
+
+    accounts = Account.query.with_entities(*fields).all()
 
     if not accounts:
         return {'message': 'No accounts found'}, 404
 
-    g.accounts = jsonify([account.to_dict() for account in accounts])
+    # Note: Probably not the best way to do this
+    column_names = [field.key for field in fields]
+    
+    result = [
+        {name: getattr(account, name) for name in column_names}
+        for account in accounts
+    ]
+
+    g.accounts = jsonify(result)
     return f()
 
 @decorator
