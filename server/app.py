@@ -1,5 +1,5 @@
 from appDB import create_app, db
-from flask import send_from_directory, g, jsonify
+from flask import send_from_directory, g, jsonify, request
 from flask_restful import Api
 from flask_cors import CORS
 import os
@@ -22,9 +22,19 @@ api.add_resource(Status, '/status')
 api.add_resource(AIModel, '/ai')
 
 @app.route('/accounts', methods=['POST'])
-@Accounts.create_account
 def create_account():
-    return g.account
+    try:
+        account_data = request.json
+
+        account = Accounts.create_account(account_data)
+
+        if isinstance(account, tuple):
+            err, statusCode = account
+            return { 'message': err }, statusCode
+
+        return jsonify(account)
+    except Exception as e:
+        return { 'message': 'Something went terribly wrong!' }, 500
 
 @app.route('/accounts/<string:id>', methods=['DELETE'])
 @Accounts.delete_account

@@ -1,6 +1,5 @@
 from appDB import db
 from models.accounts import Account
-from sqlalchemy.orm import load_only
 
 from flask import request, jsonify, abort, g
 from decorator import decorator
@@ -24,27 +23,23 @@ def get_fields(fields):
     
     return return_list
 
-@decorator
-def create_account(f):
-        account_data = request.json
-
+def create_account(account_data):
         if not account_data:
-            return {'message': f'Invalid input.'}, 400
+            return 'Poor request.', 400
 
         try:
             new_account = Account(**account_data)
             db.session.add(new_account)
             db.session.commit()
-            g.account = jsonify(new_account.to_dict())
-            return f()
+            return new_account.to_dict()
 
         except Exception as e:
             db.session.rollback()
 
             if 'UNIQUE constraint failed' in str(e):
-                return {'message': f'Error: conflict.'}, 409
+                return 'Error: conflict.', 409
 
-            abort(500, description='Error: failed to create account.')
+            return 'Failed to create account.', 500
 
 @decorator
 def delete_account(f, id):
