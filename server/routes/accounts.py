@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import abort, Blueprint, jsonify, request
 from controllers.accounts import Accounts
 
 accounts_bp = Blueprint('accounts', __name__)
@@ -16,7 +16,7 @@ def create_account():
 
         return jsonify(account)
     except Exception as e:
-        return { 'message': 'Something went terribly wrong!' }, 500
+        abort(500, description='Something went terrible wrong!')
 
 @accounts_bp.route('/accounts/<string:id>', methods=['DELETE'])
 def delete_account(id):
@@ -29,7 +29,7 @@ def delete_account(id):
 
         return jsonify(account)
     except Exception as e:
-        return { 'message': 'Something went terribly wrong!' }, 500
+        abort(500, description='Something went terrible wrong!')
 
 @accounts_bp.route('/accounts', methods=['GET'])
 def list_accounts():
@@ -42,7 +42,7 @@ def list_accounts():
 
         return jsonify(accounts)
     except Exception as e:
-        return { 'message': 'Something went terribly wrong!' }, 500
+        abort(500, description='Something went terrible wrong!')
 
 @accounts_bp.route('/accounts/<string:id>', methods=['GET'])
 def retrieve_account(id):
@@ -55,7 +55,7 @@ def retrieve_account(id):
 
         return jsonify(account)
     except Exception as e:
-        return { 'message': 'Something went terribly wrong!' }, 500
+        abort(500, description='Something went terrible wrong!')
 
 @accounts_bp.route('/accounts/<string:id>', methods=['PUT'])
 def update_account(id):
@@ -70,4 +70,4 @@ def update_account(id):
 
         return jsonify(account)
     except Exception as e:
-        return { 'message': 'Something went terribly wrong!' }, 500
+        abort(500, description='Something went terrible wrong!')
