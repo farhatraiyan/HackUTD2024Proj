@@ -1,10 +1,11 @@
 from appDB import create_app, db
-from flask import send_from_directory, jsonify, request
+
+from flask import jsonify, request, send_from_directory
 from flask_restful import Api
 from flask_cors import CORS
 import os
 
-import controllers.accounts as Accounts
+from controllers.accounts import Accounts
 from controllers.utils import Status
 from controllers.ai import AIModel
 
