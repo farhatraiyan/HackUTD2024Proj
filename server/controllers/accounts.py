@@ -23,51 +23,50 @@ def get_fields(fields):
 class Accounts():
     def create_account(account_data):
         if not account_data:
-            return 'Poor request.', 400
+            raise Exception('Poor request.')
 
         try:
             new_account = Account(**account_data)
             db.session.add(new_account)
             db.session.commit()
 
-            return new_account.to_dict()
+            return new_account
         except Exception as e:
             db.session.rollback()
 
             if 'UNIQUE constraint failed' in str(e):
-                return 'Error: conflict.', 409
+                return None
 
-            return 'Failed to create account.', 500
+            raise e
 
     def delete_account(id):
         if not id:
-            return 'Poor request.', 400
+            raise Exception('Poor request.')
 
         try:
             account = retrieveAccount({'id': id})
 
             if not account:
-                return 'Account not found.', 404
+                return None
 
             db.session.delete(account)
             db.session.commit()
 
-            return account.to_dict()
+            return account
         except Exception as e:
             db.session.rollback()
-
-            return 'Failed to delete account.', 500
+            raise e
 
     def list_accounts(fields):
         if fields is None or not isinstance(fields, list):
-            return 'Poor request.', 400
+            raise Exception('Poor request.')
 
         fields = get_fields(fields)
 
         accounts = Account.query.with_entities(*fields).all()
 
         if not accounts:
-            return 'No account found.', 404
+            return None
 
         # Note: Probably not the best way to do this
         column_names = [field.key for field in fields]
@@ -87,20 +86,17 @@ class Accounts():
         else:
             account = retrieveAccount({'id': id})
 
-        if not account:
-            return 'Account not found.', 404
-        
-        return account.to_dict()
+        return account
 
     def update_account(id, account_data):
         if not id or not account_data:
-            return 'Poor request.', 400
+            raise Exception('Poor request.')
         
         try:
             account = retrieveAccount({'id': id})
 
             if not account:
-                return 'Account not found.', 404
+                return None
 
             if 'username' in account_data:
                 account.username = account_data['username']
@@ -110,11 +106,13 @@ class Accounts():
 
             db.session.commit()
 
-            return account.to_dict()
+            return account
         except Exception as e:
             db.session.rollback()
+            raise e
+    
+    def to_dict(account):
+        if not isinstance(account, Account):
+            return None
 
-            if 'UNIQUE constraint failed' in str(e):
-                return 'Error: conflict.', 409
-
-            return 'Failed to update account.', 500
+        return account.to_dict()
