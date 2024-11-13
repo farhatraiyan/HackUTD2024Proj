@@ -28,6 +28,10 @@ def serve_about():
 def serve_chatbot():
     return serve_page('chatbot.html')
 
+@pages_bp.route('/signin')
+def serve_signIn():
+    return serve_page('signin.html')
+
 @pages_bp.route('/assets/<path:filename>')
 def serve_assets(filename):
     current_dir = Path(__file__).parent.parent

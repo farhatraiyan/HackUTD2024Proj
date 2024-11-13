@@ -76,7 +76,7 @@ function AI() {
                 )}
             </div>
             <div className="flex justify-center w-full absolute bottom-0 p-4 bg-slate-800">
-                <form onSubmit={onClick} className="flex items-center space-x-4">
+                <form onClick={onClick} onSubmit={onClick} className="flex items-center space-x-4">
                     <label className='text-white'>Image: </label>
                     <ToggleSwitch checked={image} onClick={() => setImage(!image)} />
                     <TextInput className='w-96' type="text" placeholder="Type your message..." value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)} />

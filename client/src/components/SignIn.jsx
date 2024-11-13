@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Button, Checkbox, Label, TextInput } from "flowbite-react";
+import { Button, Label, TextInput } from "flowbite-react";
 
 const server_url = import.meta.env.VITE_SERVER_URL || '';
 
-function createAccount(e) {
+export default function signIn(e) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [accounts, setAccounts] = useState([]);
@@ -27,30 +27,10 @@ function createAccount(e) {
     }
 
     const onSubmit = async (e) => {
-        e.preventDefault()
-        const data = {
-            username,
-            password
-        }
-        const url = `${server_url}/accounts`;
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        }
-
-        const response = await fetch(url, options)
-
-        if (response.status !== 201 && response.status !== 200) {
-            const data = await response.json();
-            alert(data.message);
-            return;
-        }
+        e.target.reset();
+        e.preventDefault();
         setUsername("")
         setPassword("")
-        setRefresh(prev => !prev);
     }
 
     useEffect(() => {
@@ -73,15 +53,13 @@ function createAccount(e) {
                         </div>
                         <TextInput type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     </div>
-                    <Button type="submit">Create Account</Button>
+                    <Button type="submit">Sign In</Button>
                     <div className="flex gap-1">
-                        <span>Already have an account?</span>
-                        <a href = "/signin" className="text-blue-500">Sign in</a>
+                        <span>Don't have an account yet?</span>
+                        <a href = "/create" className="text-blue-500">Create Account</a>
                     </div>
                 </form>
             </div>
         </div>
     );
 };
-
-export default createAccount;
