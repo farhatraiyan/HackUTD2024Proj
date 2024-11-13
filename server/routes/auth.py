@@ -11,7 +11,7 @@ def login():
     
         user = Accounts.retrieve_account(data['username'])
 
-        if user and user.password == data['password']:
+        if user and user.check_password(data['password']):
             login_user(user)
             return jsonify({'message': 'Logged in successfully'})
         
@@ -34,9 +34,6 @@ def signup():
         user = Accounts.retrieve_account(data['username'])
 
         if user:
-            if user.password == data['password']:
-                return {'message': 'You are already signed up'}, 409
-
             return {'message': 'Username already taken'}, 401
 
         new_user = Accounts.create_account(data)
