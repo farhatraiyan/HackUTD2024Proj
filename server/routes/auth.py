@@ -20,7 +20,7 @@ def login():
     except Exception as e:
         return {'message': 'Failed to log in'}, 500
 
-@auth_bp.route('/logout')
+@auth_bp.route('/logout', methods=['POST'])
 @login_required
 def logout():
     logout_user()
