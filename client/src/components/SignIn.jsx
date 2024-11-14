@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Label, TextInput } from "flowbite-react";
+import Cookies from 'js-cookie';
+
 
 const server_url = import.meta.env.VITE_SERVER_URL || '';
 
@@ -9,6 +11,10 @@ export default function signIn(e) {
     const [accounts, setAccounts] = useState([]);
     const [refresh, setRefresh] = useState(false);
 
+    //sets a cookie called username as the username
+    const setUsernameCookie = (username) => {
+        Cookies.set("username", username);
+    }
     const getAccounts = async () => {
         const url = `${server_url}/accounts`;
         const options = {
@@ -27,10 +33,15 @@ export default function signIn(e) {
     }
 
     const onSubmit = async (e) => {
-        e.target.reset();
-        e.preventDefault();
-        setUsername("")
-        setPassword("")
+        e.preventDefault()
+        //#todo make verification for account sign in
+        setUsernameCookie(username)
+        //console.log(Cookies.get("username"))
+        //e.target.reset();
+        setUsername("");
+        setPassword("");
+        //redirects to the user page after succesfully logging into the account
+        window.location.href = "/user";
     }
 
     useEffect(() => {

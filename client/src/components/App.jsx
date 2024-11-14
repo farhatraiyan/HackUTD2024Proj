@@ -14,7 +14,7 @@ export default function CardComponent() {
                 </Card>
                 <Card href="#" className="w-96 mb-1 mr-1 ml-1 mt-1">
                     <h5 className="text-2xl font-bold tracking-tight">
-                        Sudin Raj
+                        Sudin Rajbanshi
                     </h5>
                     <p className="font-normal h-16">
                         Some desc.

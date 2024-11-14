@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Button, Checkbox, Label, TextInput } from "flowbite-react";
+import Cookies from 'js-cookie';
 
 const server_url = import.meta.env.VITE_SERVER_URL || '';
 
@@ -8,6 +9,11 @@ function createAccount(e) {
     const [password, setPassword] = useState("");
     const [accounts, setAccounts] = useState([]);
     const [refresh, setRefresh] = useState(false);
+
+    //sets a cookie called username as the username
+    const setUsernameCookie = (username) => {
+        Cookies.set("username", username);
+    }
 
     const getAccounts = async () => {
         const url = `${server_url}/accounts`;
@@ -48,9 +54,12 @@ function createAccount(e) {
             alert(data.message);
             return;
         }
+        setUsernameCookie(username)
         setUsername("")
         setPassword("")
         setRefresh(prev => !prev);
+        //redirects to the user page after succesfully creating the account
+        window.location.href = "/user";
     }
 
     useEffect(() => {
