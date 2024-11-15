@@ -35,6 +35,13 @@ def serve_signIn():
 @pages_bp.route('/user')
 def serve_userPage():
     return serve_page('user.html')
+@pages_bp.route('/upload')
+def serve_upload():
+    return serve_page('upload.html')
+
+@pages_bp.route('/media')
+def serve_media():
+    return serve_page('media.html')
 
 @pages_bp.route('/assets/<path:filename>')
 def serve_assets(filename):

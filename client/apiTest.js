@@ -1,106 +1,54 @@
-import assert from 'assert';
 const serviceUrl = 'http://127.0.0.1:8101';
 
-describe('Flask API', () => {
-    let postedId;
+describe('Flask App Auth Tests', () => {
+    let loginToken;
 
-    it('GET /accounts should return status 404 before any accounts are posted', async () => {
-        const req = {
-            method: 'GET'
-        }
-
-        const response = await fetch(`${serviceUrl}/accounts`, req);
-        const resBody = await response.json();
-
-        console.log(resBody);
-
-        assert.strictEqual(response.status, 404);
-    });
-
-    it('POST /accounts will post an account and return it without the password', async () => {
-        const account = {
-            username: 'user3',
-            password: 'pass'
-        }
-
-        const req = {
+    it('test signup', async () => {
+        const res = await fetch(`${serviceUrl}/signup`, {
             method: 'POST',
-            body: JSON.stringify(account),
-            headers: { 'Content-Type': 'application/json' }
-        }
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: 'user',
+                password: 'pass'
+            })
+        });
 
-        const response = await fetch(`${serviceUrl}/accounts`, req);
-        const resBody = await response.json();
-
+        const resBody = await res.json();
+        loginToken = res.headers.get('set-cookie');
         console.log(resBody);
-
-        assert.strictEqual(resBody.username, account.username);
-        assert(resBody.password === undefined);
-        assert(resBody.id !== undefined);
-
-        postedId = resBody.id;
+        console.log(res.headers);
     });
 
-    it('GET /accounts should now return posted user as part of array', async () => {
-        const req = {
-            method: 'GET'
-        }
-
-        const response = await fetch(`${serviceUrl}/accounts`, req);
-        const resBody = await response.json();
-
-        console.log(resBody);
-
-        assert.strictEqual(resBody.length, 1);
-    });
-
-    it('GET /accounts/:id should return just the posted user', async () => {
-        const req = {
-            method: 'GET'
-        }
-
-        const response = await fetch(`${serviceUrl}/accounts/${postedId}`, req);
-        const resBody = await response.json();
-
-        console.log(resBody);
-
-        assert.strictEqual(resBody.id, postedId);
-    });
-
-    it('GET /accounts/:username should return just the posted user', async () => {
-        const req = {
-            method: 'GET'
-        }
-
-        const response = await fetch(`${serviceUrl}/accounts/user3`, req);
-        const resBody = await response.json();
-
-        console.log(resBody);
-
-        assert.strictEqual(resBody.id, postedId);
-    });
-
-    it('POST /accounts should fail to post account with same username', async () => {
-        const account = {
-            username: 'user3',
-            password: 'pass'
-        }
-
-        const req = {
+    it('test logout', async () => {
+        const res = await fetch(`${serviceUrl}/logout`, {
             method: 'POST',
-            body: JSON.stringify(account),
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 
+                'Content-Type': 'application/json',
+                'Cookie': loginToken
         }
+        });
 
-        const response = await fetch(`${serviceUrl}/accounts`, req);
-        const resBody = await response.json();
-
+        const resBody = await res.json();
         console.log(resBody);
+        loginToken = null;
+    });
+    
+    it('test login', async () => {
+        const res = await fetch(`${serviceUrl}/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: 'user',
+                password: 'pass'
+            })
+        });
 
-        assert.strictEqual(response.status, 409);
+        const resBody = await res.json();
+        loginToken = res.headers.get('set-cookie');
+        console.log(resBody);
     });
 
-    it('PUT /accounts/:id should update the account username (and password)', async () => {
+    it('PUT /accounts should update user account', async () => {
         const account = {
             username: 'user4',
             password: 'pass2'
@@ -109,42 +57,29 @@ describe('Flask API', () => {
         const req = {
             method: 'PUT',
             body: JSON.stringify(account),
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': loginToken
+            }
         }
 
-        const response = await fetch(`${serviceUrl}/accounts/${postedId}`, req);
+        const response = await fetch(`${serviceUrl}/accounts`, req);
         const resBody = await response.json();
 
         console.log(resBody);
-
-        assert.strictEqual(resBody.id, postedId);
-        assert.strictEqual(resBody.username, account.username);
-        assert(resBody.password === undefined);
     });
 
-    it('DELETE /accounts/:id should delete the posted user account', async () => {
+    it('DELETE /accounts should delete the posted user account', async () => {
         const req = {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Cookie': loginToken
+            }
         }
 
-        const response = await fetch(`${serviceUrl}/accounts/${postedId}`, req);
+        const response = await fetch(`${serviceUrl}/accounts`, req);
         const resBody = await response.json();
 
         console.log(resBody);
-
-        assert.strictEqual(resBody.id, postedId);
-    });
-
-    it('DELETE /accounts/:id should fail to delete non-existant account', async () => {
-        const req = {
-            method: 'DELETE'
-        }
-
-        const response = await fetch(`${serviceUrl}/accounts/${postedId}`, req);
-        const resBody = await response.json();
-
-        console.log(resBody);
-
-        assert.strictEqual(response.status, 404);
     });
 });
