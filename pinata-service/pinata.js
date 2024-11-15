@@ -18,39 +18,6 @@ const uploadConfig = multer({
     }
 });
 
-const fileToBase64 = async file => {
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    const base64String = buffer.toString('base64');
-    return `data:${file.type};base64,${base64String}`;
-};
-
-const pinataUpload = async (file) => {
-    try {
-        const upload = await pinata.upload.file(file);
-        console.log(upload);
-        return upload;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-};
-
-const pinataGet = async cid => {
-    try {
-        const response = await pinata.gateways.get(cid);
-        console.log('pinata response: ', response);
-
-        return {
-            data: response.data,
-            contentType: response.contentType
-        };
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-};
-
 export const upload = [
     uploadConfig.single('file'),
     async (req, res) => {
@@ -65,7 +32,8 @@ export const upload = [
                 { type: req.file.mimetype }
             );
 
-            const uploadData = await pinataUpload(file);
+            const uploadData = await pinata.upload.file(file);
+            console.log(uploadData)
             res.send(uploadData);
         } catch (error) {
             res.status(500).send(error.message);
@@ -78,6 +46,7 @@ export const media = async (req, res) => {
         const cid = req.params.cid;
         const response = await pinata.gateways.get(cid);
         const { data, contentType } = response;
+        console.log(response);
 
         const ext = contentType.split('/')[1] || 'bin';
         const filename = `${cid}.${ext}`;

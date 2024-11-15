@@ -17,12 +17,6 @@ const cors = corsMiddleware({
 
 server.pre(cors.preflight);
 server.use(cors.actual);
-// server.use(restify.plugins.bodyParser({
-//     maxBodySize: 0,
-//     mapParams: true,
-//     mapFiles: false,
-//     overrideParams: false
-// }));
 server.use(restify.plugins.queryParser());
 
 server.post('/upload', upload);

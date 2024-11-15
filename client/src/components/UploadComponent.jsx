@@ -29,15 +29,6 @@ export function UploadMedia() {
         }
     }
 
-    const fileToBase64 = file => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = (error) => reject(error);
-        });
-    };
-
     const handleFileChange = (e) => {
         const file = e.target.files?.[0];
         if (file) {
