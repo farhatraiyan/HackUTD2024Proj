@@ -15,22 +15,6 @@ export default function signIn(e) {
     const setUsernameCookie = (username) => {
         Cookies.set("username", username);
     }
-    const getAccounts = async () => {
-        const url = `${server_url}/accounts`;
-        const options = {
-            method: "GET"
-        }
-
-        const response = await fetch(url, options);
-
-        if (response.status !== 200) {
-            alert("Failed to get accounts");
-            return;
-        }
-
-        const data = await response.json();
-        setAccounts(data);
-    }
 
     const onSubmit = async (e) => {
         e.preventDefault()
