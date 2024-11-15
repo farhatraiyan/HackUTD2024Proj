@@ -28,6 +28,14 @@ def serve_about():
 def serve_chatbot():
     return serve_page('chatbot.html')
 
+@pages_bp.route('/upload')
+def serve_upload():
+    return serve_page('upload.html')
+
+@pages_bp.route('/media')
+def serve_media():
+    return serve_page('media.html')
+
 @pages_bp.route('/assets/<path:filename>')
 def serve_assets(filename):
     current_dir = Path(__file__).parent.parent

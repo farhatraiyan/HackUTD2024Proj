@@ -12,6 +12,7 @@ from routes.accounts import accounts_bp
 from routes.ai import ai_bp
 from routes.auth import auth_bp
 from routes.pages import pages_bp
+from routes.media import media_bp
 
 # Initialize Flask app, DB
 app = create_app()
@@ -29,6 +30,7 @@ app.register_blueprint(accounts_bp)
 app.register_blueprint(ai_bp)
 app.register_blueprint(pages_bp)
 app.register_blueprint(auth_bp)
+app.register_blueprint(media_bp)
 
 # Run the app on port 8101
 if __name__ == '__main__':
