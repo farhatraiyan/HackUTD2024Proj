@@ -23,6 +23,9 @@ def upload():
             service_url + "/upload",
             files=files
         )
+
+        if not response.ok:
+            return {"error": "Failed to upload file"}, response.status_code
         
         upload_data = response.json()
         print('Upload response:', upload_data)
@@ -35,9 +38,19 @@ def upload():
 def media(media_id):
     try:
         response = requests.get(
-            f"{service_url}/media/{media_id}"
+            f"{service_url}/media/{media_id}",
+            stream=True
         )
 
-        return response.json(), response.status_code
+        if not response.ok:
+            return {"error": "Failed to retrieve file"}, response.status_code
+
+        headers = {
+            'Content-Type': response.headers.get('Content-Type'),
+            'Content-Disposition': response.headers.get('Content-Disposition'),
+            'Content-Length': response.headers.get('Content-Length')
+        }
+        
+        return response.content, response.status_code, headers
     except requests.RequestException as e:
         return {"error": "Failed to retrieve file"}, 500

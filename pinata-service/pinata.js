@@ -1,7 +1,9 @@
 import dotenv from 'dotenv';
 dotenv.config();
+
 import { PinataSDK } from "pinata";
 import multer from 'multer';
+import FormData from 'form-data';
 
 const pinata = new PinataSDK({
     pinataJwt: process.env.PINATA_JWT,
@@ -37,15 +39,12 @@ const pinataUpload = async (file) => {
 const pinataGet = async cid => {
     try {
         const response = await pinata.gateways.get(cid);
-        console.log(response);
+        console.log('pinata response: ', response);
 
-        const { data, contentType } = response
-
-        const ext = contentType.split('/')[1];
-
-        const image = new File([data], `${cid}.${ext}`, { type: contentType });
-
-        return image;
+        return {
+            data: response.data,
+            contentType: response.contentType
+        };
     } catch (error) {
         console.log(error);
         throw error;
@@ -75,9 +74,31 @@ export const upload = [
 ];
 
 export const media = async (req, res) => {
-    const cid = req.params.cid;
-    const image = await pinataGet(cid);
-    const imageBase64 = await fileToBase64(image);
-    res.send({imageBase64});
-    return;
+    try {
+        const cid = req.params.cid;
+        const response = await pinata.gateways.get(cid);
+        const { data, contentType } = response;
+
+        const ext = contentType.split('/')[1] || 'bin';
+        const filename = `${cid}.${ext}`;
+
+        const formData = new FormData();
+        const buffer = Buffer.from(await data.arrayBuffer());
+
+        formData.append('file', buffer, {
+            filename: filename,
+            contentType: contentType
+        });
+
+        const headers = formData.getHeaders();
+
+        Object.entries(headers).forEach(([key, value]) => {
+            res.header(key, value);
+        });
+
+        formData.pipe(res);
+    } catch (error) {
+        console.error('Media fetch error:', error);
+        res.status(500).send({ error: error.message });
+    }
 };
