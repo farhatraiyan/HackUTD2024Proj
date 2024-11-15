@@ -1,8 +1,9 @@
-import corsMiddleware from 'restify-cors-middleware2';
 import dotenv from 'dotenv';
+dotenv.config();
+
+import corsMiddleware from 'restify-cors-middleware2';
 import { media, upload } from './pinata.js';
 import restify from 'restify';
-dotenv.config();
 
 const server = restify.createServer({
     name: 'pinata-service'
@@ -16,12 +17,6 @@ const cors = corsMiddleware({
 
 server.pre(cors.preflight);
 server.use(cors.actual);
-// server.use(restify.plugins.bodyParser({
-//     maxBodySize: 0,
-//     mapParams: true,
-//     mapFiles: false,
-//     overrideParams: false
-// }));
 server.use(restify.plugins.queryParser());
 
 server.post('/upload', upload);
