@@ -1,17 +1,20 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import { PinataSDK } from "pinata";
+import multer from 'multer';
 
 const pinata = new PinataSDK({
     pinataJwt: process.env.PINATA_JWT,
     pinataGateway: process.env.PINATA_GATEWAY,
 });
 
-const base64ToFile = async (base64, filename, type) => {
-    const res = await fetch(base64);
-    const blob = await res.blob();
-    return new File([blob], filename, { type });
-};
+const storage = multer.memoryStorage();
+const uploadConfig = multer({ 
+    storage: storage,
+    limits: {
+        fileSize: 10 * 1024 * 1024 // 10MB limit
+    }
+});
 
 const fileToBase64 = async file => {
     const arrayBuffer = await file.arrayBuffer();
@@ -49,13 +52,27 @@ const pinataGet = async cid => {
     }
 };
 
-export const upload = async (req, res) => {
-    const { base64, filename, filetype } = req.body;
-    const file = await base64ToFile(base64, filename, filetype);
-    const uploadData = await pinataUpload(file);
-    res.send(uploadData);
-    return;
-};
+export const upload = [
+    uploadConfig.single('file'),
+    async (req, res) => {
+        try {
+            if (!req.file) {
+                return res.status(400).send('No file uploaded');
+            }
+
+            const file = new File(
+                [req.file.buffer],
+                req.file.originalname,
+                { type: req.file.mimetype }
+            );
+
+            const uploadData = await pinataUpload(file);
+            res.send(uploadData);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    }
+];
 
 export const media = async (req, res) => {
     const cid = req.params.cid;

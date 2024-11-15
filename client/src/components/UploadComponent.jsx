@@ -6,23 +6,23 @@ export function UploadMedia() {
     const [media, setMedia] = useState(null);
     const [preview, setPreview] = useState("");
 
-    const uploadMedia = async base64 => {
+    const uploadMedia = async media => {
         try {
+            const formData = new FormData();
+            formData.append('file', media);
+    
             const response = await fetch("/upload", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    base64,
-                    filename: media.name,
-                    filetype: media.type,
-                }),
+                body: formData
             });
+    
             if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`);
+                const errorData = await response.json();
+                throw new Error(`HTTP error: ${response.status} - ${JSON.stringify(errorData)}`);
             }
-            return response;
+
+            alert(response.json());
+            return;
         } catch (error) {
             alert("Upload failed:" + error);
             throw error;
@@ -61,8 +61,7 @@ export function UploadMedia() {
             onSubmit={async e => {
                 e.preventDefault();
                 if (media) {
-                    const base64 = await fileToBase64(media);
-                    await uploadMedia(base64);
+                    await uploadMedia(media);
                 }
             }}
         >
