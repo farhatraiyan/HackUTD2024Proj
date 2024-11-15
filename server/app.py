@@ -22,7 +22,7 @@ CORS(app) # Heavily rethink this in production; this is a security risk; only fo
 
 # Create DB tables if they don't exist
 with app.app_context():
-    db.drop_all()
+    #db.drop_all()
     db.create_all()
 
 # Register route Blueprints

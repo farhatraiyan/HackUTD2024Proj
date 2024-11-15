@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Button, Checkbox, Label, TextInput } from "flowbite-react";
+import { Button, Label, TextInput } from "flowbite-react";
 import Cookies from 'js-cookie';
+
 
 const server_url = import.meta.env.VITE_SERVER_URL || '';
 
-function createAccount(e) {
+export default function signIn(e) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [accounts, setAccounts] = useState([]);
@@ -17,11 +18,15 @@ function createAccount(e) {
 
     const onSubmit = async (e) => {
         e.preventDefault()
+        //verification for account sign in
         const data = {
             username,
             password
         }
-        const url = `${server_url}/signup`;
+        setUsername("");
+        setPassword("");
+
+        const url = `${server_url}/login`;
         const options = {
             method: "POST",
             headers: {
@@ -38,10 +43,10 @@ function createAccount(e) {
             return;
         }
         setUsernameCookie(username)
-        setUsername("")
-        setPassword("")
-        setRefresh(prev => !prev);
-        //redirects to the user page after succesfully creating the account
+        console.log(Cookies.get("username"))
+        //e.target.reset();
+        
+        //redirects to the user page after succesfully logging into the account
         window.location.href = "/user";
     }
 
@@ -65,15 +70,13 @@ function createAccount(e) {
                         </div>
                         <TextInput type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     </div>
-                    <Button type="submit">Create Account</Button>
+                    <Button type="submit">Sign In</Button>
                     <div className="flex gap-1">
-                        <span>Already have an account?</span>
-                        <a href = "/signin" className="text-blue-500">Sign in</a>
+                        <span>Don't have an account yet?</span>
+                        <a href = "/create" className="text-blue-500">Create Account</a>
                     </div>
                 </form>
             </div>
         </div>
     );
 };
-
-export default createAccount;

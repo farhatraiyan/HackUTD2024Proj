@@ -28,6 +28,14 @@ def serve_about():
 def serve_chatbot():
     return serve_page('chatbot.html')
 
+@pages_bp.route('/signin')
+def serve_signIn():
+    return serve_page('signin.html')
+
+@pages_bp.route('/user')
+def serve_userPage():
+    return serve_page('user.html')
+
 @pages_bp.route('/upload')
 def serve_upload():
     return serve_page('upload.html')
