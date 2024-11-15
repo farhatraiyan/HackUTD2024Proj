@@ -35,6 +35,7 @@ def serve_signIn():
 @pages_bp.route('/user')
 def serve_userPage():
     return serve_page('user.html')
+
 @pages_bp.route('/upload')
 def serve_upload():
     return serve_page('upload.html')

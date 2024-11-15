@@ -34,12 +34,34 @@ export default function signIn(e) {
 
     const onSubmit = async (e) => {
         e.preventDefault()
-        //#todo make verification for account sign in
-        setUsernameCookie(username)
-        //console.log(Cookies.get("username"))
-        //e.target.reset();
+        //verification for account sign in
+        const data = {
+            username,
+            password
+        }
         setUsername("");
         setPassword("");
+
+        const url = `${server_url}/login`;
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }
+
+        const response = await fetch(url, options)
+
+        if (response.status !== 201 && response.status !== 200) {
+            const data = await response.json();
+            alert(data.message);
+            return;
+        }
+        setUsernameCookie(username)
+        console.log(Cookies.get("username"))
+        //e.target.reset();
+        
         //redirects to the user page after succesfully logging into the account
         window.location.href = "/user";
     }

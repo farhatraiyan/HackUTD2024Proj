@@ -38,7 +38,7 @@ function createAccount(e) {
             username,
             password
         }
-        const url = `${server_url}/accounts`;
+        const url = `${server_url}/signup`;
         const options = {
             method: "POST",
             headers: {

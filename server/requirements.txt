@@ -2,6 +2,7 @@ Flask
 flask-sqlalchemy
 flask_restful
 flask-cors
+flask_login
 openai
 python_dotenv
 langchain
