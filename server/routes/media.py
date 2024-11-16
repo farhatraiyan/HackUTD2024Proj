@@ -1,5 +1,5 @@
 from appDB import db
-from flask import Blueprint, Response, request
+from flask import Blueprint, jsonify, Response, request
 from models.images import Images
 from PIL import Image
 import requests
@@ -66,6 +66,21 @@ def upload():
 
         print('Upload error:', str(e))
         return {"error": "SOMETHING WENT TERRIBLY WRONG"}, 500
+
+@media_bp.route('/image')
+def media_list():
+    try:
+        images = Images.query.with_entities(Images.id).all()
+
+        if not images:
+            print('no images found')
+            return {"error": "No images found"}, 404
+
+        images_list = [{'preview_id': image.id} for image in images]
+
+        return jsonify(images_list)
+    except requests.RequestException as e:
+        return {"error": "Failed to retrieve images"}, 500
 
 @media_bp.route('/image/<string:media_id>')
 def media(media_id):
