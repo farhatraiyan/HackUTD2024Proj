@@ -1,16 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useLayoutEffect } from "react";
 
-export function Image() {
+export function MediaId() {
     const [cid, setCid] = useState("");
     const [imageUrl, setImageUrl] = useState('');
     const [previewUrl, setPreviewUrl] = useState('');
     //const  imageCid = (window.location.href).split("/")[2];
-    const param = new URLSearchParams(window.location.search);
-    const imageCid = param.get('cid');
+    //const param = new URLSearchParams(window.location.search);
+    const imageCid = (window.location.href).split("/")[4];
     console.log(imageCid);
-    getMedia(imageCid);
     const getMedia = async cid => {
         try {
             const response = await fetch(`/media/image/${cid}?original=true`, { method: "GET" });
@@ -24,9 +23,13 @@ export function Image() {
             throw error;
         }
     };
+    
+    useLayoutEffect(()=>getMedia(imageCid), []);
+    
 
     return (
         <div className="w-full flex justify-center h-screen flex flex-col items-center mt-10">
+            <p>IMAGE:</p>
             <div>
                 {imageUrl && (
                     <div className="mt-4">
