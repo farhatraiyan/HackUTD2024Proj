@@ -28,7 +28,7 @@ export function MediaId() {
     
 
     return (
-        <div className="w-full flex justify-center h-screen flex flex-col items-center mt-10">
+        <div className="w-full flex justify-center h-screen flex-col items-center mt-10">
             <p>IMAGE:</p>
             <div>
                 {imageUrl && (
