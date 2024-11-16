@@ -46,6 +46,7 @@ export const media = async (req, res) => {
         const cid = req.params.cid;
         const response = await pinata.gateways.get(cid);
         const { data, contentType } = response;
+        console.log(response);
 
         res.set({
             'Content-Type': contentType,

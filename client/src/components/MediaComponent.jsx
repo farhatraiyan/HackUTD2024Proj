@@ -9,7 +9,7 @@ export function ViewMedia() {
 
     const getMedia = async cid => {
         try {
-            const response = await fetch(`/media/${cid}?original=true`, { method: "GET" });
+            const response = await fetch(`/media/image/${cid}?original=true`, { method: "GET" });
             if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
     
             const blob = await response.blob();
@@ -23,7 +23,7 @@ export function ViewMedia() {
 
     const getPreview = async cid => {
         try {
-            const response = await fetch(`/media/${cid}?original=false`, { method: "GET" });
+            const response = await fetch(`/media/image/${cid}`, { method: "GET" });
             if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
     
             const blob = await response.blob();

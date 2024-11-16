@@ -50,16 +50,17 @@ def upload():
         print('Upload error:', str(e))
         return {"error": "SOMETHING WENT TERRIBLY WRONG"}, 500
 
-@media_bp.route('/media/<string:media_id>')
+@media_bp.route('/image/<string:media_id>')
 def media(media_id):
     try:
         image = Images.query.filter_by(id=media_id).first()
+        if not image:
+            return {"error": "Image not found"}, 404
         print('Image:', image.original_id)
 
-        want_original = request.args.get('original', 'false').lower()
+        want_original = request.args.get('original', 'false').lower() == 'true'
 
-        image = Images.query.filter_by(id=media_id).first()
-        if want_original == 'true':
+        if want_original:
             print('Original Image:', image.original_id)
             media_id = image.original_id
         else:

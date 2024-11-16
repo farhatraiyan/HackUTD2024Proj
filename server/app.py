@@ -30,7 +30,7 @@ app.register_blueprint(accounts_bp)
 app.register_blueprint(ai_bp)
 app.register_blueprint(pages_bp)
 app.register_blueprint(auth_bp)
-app.register_blueprint(media_bp)
+app.register_blueprint(media_bp, url_prefix='/media')
 
 # Run the app on port 8101
 if __name__ == '__main__':
