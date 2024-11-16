@@ -48,24 +48,21 @@ export const media = async (req, res) => {
         const { data, contentType } = response;
         console.log(response);
 
-        const ext = contentType.split('/')[1] || 'bin';
-        const filename = `${cid}.${ext}`;
-
-        const formData = new FormData();
-        const buffer = Buffer.from(await data.arrayBuffer());
-
-        formData.append('file', buffer, {
-            filename: filename,
-            contentType: contentType
+        res.set({
+            'Content-Type': contentType,
+            'Content-Disposition': `inline; filename="${cid}.${contentType.split('/')[1] || 'bin'}"`,
         });
 
-        const headers = formData.getHeaders();
-
-        Object.entries(headers).forEach(([key, value]) => {
-            res.header(key, value);
-        });
-
-        formData.pipe(res);
+        if (data instanceof Blob) {
+            const buffer = Buffer.from(await data.arrayBuffer());
+            res.send(buffer);
+        } else if (typeof data === 'string') {
+            res.send(data);
+        } else if (data) {
+            res.send(data);
+        } else {
+            throw new Error('No data received');
+        }
     } catch (error) {
         console.error('Media fetch error:', error);
         res.status(500).send({ error: error.message });

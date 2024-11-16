@@ -19,7 +19,7 @@ server.pre(cors.preflight);
 server.use(cors.actual);
 server.use(restify.plugins.queryParser());
 
-server.post('/upload', upload);
+server.post('/media', upload);
 server.get('/media/:cid', media);
 
 server.listen(8102, '127.0.0.1', () => {

@@ -9,7 +9,6 @@ from flask_cors import CORS
 
 # Import Blueprints (app routes are defined within these)
 from routes.accounts import accounts_bp
-from routes.ai import ai_bp
 from routes.auth import auth_bp
 from routes.pages import pages_bp
 from routes.media import media_bp
@@ -27,10 +26,9 @@ with app.app_context():
 
 # Register route Blueprints
 app.register_blueprint(accounts_bp)
-app.register_blueprint(ai_bp)
 app.register_blueprint(pages_bp)
 app.register_blueprint(auth_bp)
-app.register_blueprint(media_bp)
+app.register_blueprint(media_bp, url_prefix='/media')
 
 # Run the app on port 8101
 if __name__ == '__main__':

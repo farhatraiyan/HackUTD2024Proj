@@ -12,7 +12,7 @@ export function UploadMedia() {
             const formData = new FormData();
             formData.append('file', media);
     
-            const response = await fetch("/upload", {
+            const response = await fetch("/media/upload", {
                 method: "POST",
                 body: formData
             });
