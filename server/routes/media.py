@@ -1,8 +1,24 @@
-from flask import Blueprint, request, jsonify
+from appDB import db
+from flask import Blueprint, request
+from models.images import Images
 import requests
 
 media_bp = Blueprint('media', __name__)
 service_url = "http://127.0.0.1:8102"
+
+def upload_file(files):
+    response = requests.post(
+        service_url + "/media",
+        files=files
+    )
+
+    if not response.ok:
+        return {"error": "Failed to upload file"}, response.status_code
+    
+    upload_data = response.json()
+    cid = upload_data.get('cid')
+    print('Upload response:', cid)
+    return cid
 
 @media_bp.route('/upload', methods=['POST'])
 def upload():
@@ -19,26 +35,31 @@ def upload():
         file.seek(0)
         files = {'file': (file.filename, file_content, file.content_type)}
 
-        response = requests.post(
-            service_url + "/media",
-            files=files
-        )
+        original_id = upload_file(files)
+        preview_id = upload_file(files)
 
-        if not response.ok:
-            return {"error": "Failed to upload file"}, response.status_code
-        
-        upload_data = response.json()
-        print('Upload response:', upload_data)
-        return { "message": "Upload successful!" }, response.status_code
+        new_image = Images(original_id, preview_id)
+        db.session.add(new_image)
+        db.session.commit()
+        print(new_image.to_dict())
+
+        return { "message": "Upload successful!" }
     except requests.RequestException as e:
+        db.session.rollback()
+
         print('Upload error:', str(e))
         return {"error": "SOMETHING WENT TERRIBLY WRONG"}, 500
 
 @media_bp.route('/media/<string:media_id>')
 def media(media_id):
     try:
+        image = Images.query.filter_by(id=media_id).first()
+        print('Image:', image.original_id, image.preview_id)
+
+        file_id = image.original_id
+
         response = requests.get(
-            f"{service_url}/media/{media_id}",
+            f"{service_url}/media/{file_id}",
             stream=True
         )
 
