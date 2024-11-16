@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { ViewMedia } from '../components/MediaComponent.jsx'
+import { PreviewMedia } from '../components/MediaList.jsx'
 import NavbarComponent from '../components/Navbar.jsx'
 import './tailwind.css';
 

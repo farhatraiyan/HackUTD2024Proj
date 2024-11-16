@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect } from "react";
 
-export function MediaView() {
+export function PreviewMedia() {
     const [cid, setCid] = useState("");
     const [previewUrls, setPreviewUrls] = useState([]);
 
@@ -40,10 +40,15 @@ export function MediaView() {
         }
     };
 
+    useLayoutEffect(() => {
+        alert('Page load');
+      }, []);
+    
+
     return (
         <div className="w-full flex justify-center h-screen flex flex-col items-center mt-10">
             {previewUrls && previewUrls.map(previewUrl =>
-                <div className="mt-4">
+                <div className="m-4 w-100 h-100">
                     <img src={previewUrl} alt="Preview" />
                 </div>
             )}
