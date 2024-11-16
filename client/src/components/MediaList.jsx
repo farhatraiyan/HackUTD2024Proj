@@ -15,15 +15,11 @@ export function PreviewMedia() {
 
             alert(JSON.stringify(imageIds));
             
-            imageIds.forEach(async imageId => {
-                const imageUrl = await getPreview(imageId.preview_id);
-                alert(imageUrl);
-
-                setPreviewUrls([
-                    ...previewUrls,
-                    imageUrl
-                ])
-            });
+            const urls = await Promise.all(
+                imageIds.map(imageId => getPreview(imageId.preview_id))
+            );
+            
+            setPreviewUrls(urls);
         } catch {
 
         }
@@ -48,17 +44,14 @@ export function PreviewMedia() {
       }, []);
     
 
-    return (
+      return (
         <div className="w-full flex justify-center h-screen flex flex-col items-center mt-10">
-            {previewUrls && previewUrls.forEach(previewUrl => {
-                return (
-                    <div className="m-4 w-100 h-100">
-                        <a>{previewUrl}</a>
-                        <img src={previewUrl} alt="Preview" />
-                    </div>
-                )
-            }
-            )}
+            {previewUrls && previewUrls.map((previewUrl, index) => (
+                <div key={index} className="m-4 w-100 h-100">
+                    <a>{previewUrl}</a>
+                    <img src={previewUrl} alt={`Preview ${index}`} />
+                </div>
+            ))}
         </div>
     );
 }
