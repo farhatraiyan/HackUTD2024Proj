@@ -20,7 +20,7 @@ def upload():
         files = {'file': (file.filename, file_content, file.content_type)}
 
         response = requests.post(
-            service_url + "/upload",
+            service_url + "/media",
             files=files
         )
 
