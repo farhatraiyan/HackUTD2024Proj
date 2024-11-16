@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 export function UploadMedia() {
     const [media, setMedia] = useState(null);
     const [preview, setPreview] = useState("");
+    const [uploaded, setUploaded] = useState("")
 
     const uploadMedia = async media => {
         try {
@@ -35,6 +36,7 @@ export function UploadMedia() {
             setMedia(file);
             const objectUrl = URL.createObjectURL(file);
             setPreview(objectUrl);
+            setUploaded("");
         }
     };
 
@@ -55,6 +57,8 @@ export function UploadMedia() {
                     if (media) {
                         await uploadMedia(media);
                     }
+                    setPreview("");
+                    setUploaded("Uploaded!");
                 }}
             >
                 <input
@@ -72,6 +76,7 @@ export function UploadMedia() {
                         />
                     </div>
                 )}
+                <p className="text-lime-500">{uploaded}</p>
                 <button
                     type="submit"
                     className="w-24 rounded-full bg-purple-700/10 py-3 font-semibold transition hover:bg-purple-950/20 justify-center"
@@ -79,6 +84,9 @@ export function UploadMedia() {
                 >
                     {uploadMedia.isPending ? "Uploading..." : "Submit"}
                 </button>
+                <div className="flex gap-1">
+                        <a href = "/media" className="text-blue-500 ml-7">Back</a>
+                </div>
             </form>
         </div>
     );
