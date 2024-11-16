@@ -50,11 +50,14 @@ export function PreviewMedia() {
 
     return (
         <div className="w-full flex justify-center h-screen flex flex-col items-center mt-10">
-            {previewUrls && previewUrls.map(previewUrl =>
-                <div className="m-4 w-100 h-100">
-                    <a>{previewUrl}</a>
-                    <img src={previewUrl} alt="Preview" />
-                </div>
+            {previewUrls && previewUrls.forEach(previewUrl => {
+                return (
+                    <div className="m-4 w-100 h-100">
+                        <a>{previewUrl}</a>
+                        <img src={previewUrl} alt="Preview" />
+                    </div>
+                )
+            }
             )}
         </div>
     );
