@@ -1,5 +1,5 @@
 from appDB import db
-from flask import Blueprint, request
+from flask import Blueprint, Response, request
 from models.images import Images
 import requests
 
@@ -73,12 +73,10 @@ def media(media_id):
         if not response.ok:
             return {"error": "Failed to retrieve file"}, response.status_code
 
-        headers = {
-            'Content-Type': response.headers.get('Content-Type'),
-            'Content-Disposition': response.headers.get('Content-Disposition'),
-            'Content-Length': response.headers.get('Content-Length')
-        }
-        
-        return response.content, response.status_code, headers
+        return Response(
+            response.iter_content(chunk_size=8192),
+            content_type=response.headers['Content-Type'],
+            headers=dict(response.headers)
+        )
     except requests.RequestException as e:
         return {"error": "Failed to retrieve file"}, 500

@@ -9,15 +9,10 @@ export function ViewMedia() {
     const getMedia = async cid => {
         try {
             const response = await fetch(`/media/${cid}`, { method: "GET" });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
     
-            const formData = await response.formData();
-            const file = formData.get('file');
-
-            const imageUrl = URL.createObjectURL(file);
+            const blob = await response.blob();
+            const imageUrl = URL.createObjectURL(blob);
             setImageUrl(imageUrl);
         } catch (error) {
             alert("Upload failed:" + error);
