@@ -6,3 +6,4 @@ flask_login
 openai
 python_dotenv
 langchain
+Pillow
