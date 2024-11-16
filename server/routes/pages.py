@@ -48,3 +48,7 @@ def serve_media():
 def serve_assets(filename):
     current_dir = Path(__file__).parent.parent
     return send_from_directory(os.path.join(current_dir, 'dist/assets'), filename)
+
+@pages_bp.route('/image')
+def serve_media_image():
+    return serve_page('image.html')
