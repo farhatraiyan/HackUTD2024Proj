@@ -46,9 +46,11 @@ export function PreviewMedia() {
       return (
         <div className="w-full grid grid-cols-3 justify-center h-screen items-center mt-10">
             {previewUrls && previewUrls.map((previewUrl, index) => (
-                <div key={index} className="m-4 w-48 h-48 cursor-pointer" href={`/media/${previewIds[index].preview_id}`}>
-                    <img className="object-contain" src={previewUrl} alt={`Preview ${index}`} 
-                    />
+                <div key={index} className="m-4 w-48 h-48 cursor-pointer">
+                    <a href={`/media/${previewIds[index].preview_id}`}>
+                        <img className="object-contain" src={previewUrl} alt={`Preview ${index}`} 
+                        />
+                    </a>
                 </div>
             ))}
         </div>
