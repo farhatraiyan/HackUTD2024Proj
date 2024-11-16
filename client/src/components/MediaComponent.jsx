@@ -37,20 +37,14 @@ export function ViewMedia() {
 
     return (
         <div className="w-full flex justify-center h-screen flex flex-col items-center mt-10">
-            {imageUrl && (
-                <div className="mt-4">
-                    <img src={imageUrl} alt="Preview" />
-                </div>
-            )}
-        <div className="w-full max-w-xs">
-            <div className=" outline-dashed">
+            <div>
                 {imageUrl && (
                     <div className="mt-4">
                         <img src={imageUrl} alt="Preview" />
                     </div>
                 )}
             </div>
-            <div className="outline-double">
+            <div>
                 {previewUrl && (
                     <div className="mt-4">
                         <img src={previewUrl} alt="Preview" />
