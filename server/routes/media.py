@@ -54,12 +54,19 @@ def upload():
 def media(media_id):
     try:
         image = Images.query.filter_by(id=media_id).first()
-        print('Image:', image.original_id, image.preview_id)
+        print('Image:', image.original_id)
 
-        file_id = image.original_id
+        want_original = request.args.get('original', 'false').lower()
+
+        image = Images.query.filter_by(id=media_id).first()
+        if want_original == 'true':
+            print('Original Image:', image.original_id)
+            media_id = image.original_id
+        else:
+            media_id = image.preview_id
 
         response = requests.get(
-            f"{service_url}/media/{file_id}",
+            f"{service_url}/media/{media_id}",
             stream=True
         )
 
