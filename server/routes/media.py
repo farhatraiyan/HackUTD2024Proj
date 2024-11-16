@@ -69,9 +69,13 @@ def upload():
 
 @media_bp.route('/image')
 def media_list():
-    images = Images.query.with_entities(Images.preview_id).all()
+    images = Images.query.with_entities(Images.id).all()
 
-    images_list = [{'preview_id': image.preview_id} for image in images]
+    if not images:
+        print('no images found')
+        return None
+
+    images_list = [{'preview_id': image.id} for image in images]
 
     return jsonify(images_list)
 
