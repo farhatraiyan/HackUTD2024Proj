@@ -22,14 +22,14 @@ export default function userPage(e) {
 
     return (
         <div>
-            <div className="flex justify-center h-screen">
-                <form onClick={onClick} className="flex w-96 flex-col gap-4 justify-normal">
+            <div className="flex justify-center h-screen mt-10">
+                <form onClick={onClick} className="flex w-96 flex-col gap-4 justify-normal flex flex-col items-center">
                     <div>
                         <div className="mb-2 block">
                             <p>{username}</p>
                         </div>
                     </div>
-                    <Button>Logout</Button>
+                    <Button className="text-neutral-950 w-24 rounded-full bg-purple-700/10 transition hover:bg-black/20 justify-center">Logout</Button>
                 </form>
             </div>
         </div>

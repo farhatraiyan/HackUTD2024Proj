@@ -26,14 +26,14 @@ export function ViewMedia() {
     };
 
     return (
-        <div className="w-full max-w-xs">
+        <div className="w-full flex justify-center h-screen flex flex-col items-center mt-10">
             {imageUrl && (
                 <div className="mt-4">
                     <img src={imageUrl} alt="Preview" />
                 </div>
             )}
             <form
-                className="flex flex-col gap-2"
+                className="flex flex-col gap-2 justify-center flex flex-col items-center"
                 onSubmit={async e => {
                     e.preventDefault();
                     if (cid) {
@@ -49,10 +49,13 @@ export function ViewMedia() {
                 />
                 <button
                     type="submit"
-                    className="rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20"
+                    className="w-24 rounded-full bg-purple-700/10 py-3 font-semibold transition hover:bg-black/20 justify-center"
                 >
                     Find
                 </button>
+                <div className="flex gap-1">
+                        <a href = "/upload" className="text-blue-500">Upload a file</a>
+                </div>
             </form>
         </div>
     );
