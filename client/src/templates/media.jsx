@@ -12,6 +12,6 @@ createRoot(document.getElementById('navbar')).render(
 
 createRoot(document.getElementById('media')).render(
   <StrictMode>
-    <ViewMedia />
+    <PreviewMedia />
   </StrictMode>,
 )

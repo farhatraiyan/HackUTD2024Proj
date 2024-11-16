@@ -11,10 +11,13 @@ export function PreviewMedia() {
             const response = await fetch('/media/image', { method: "GET" });
             if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
             
-            const imageIds = response.json();
+            const imageIds = await response.json();
+
+            alert(JSON.stringify(imageIds));
             
-            imageIds.forEach(imageId => {
-                const imageUrl = getPreview(imageId);
+            imageIds.forEach(async imageId => {
+                const imageUrl = await getPreview(imageId.preview_id);
+                alert(imageUrl);
 
                 setPreviewUrls([
                     ...previewUrls,
@@ -41,7 +44,7 @@ export function PreviewMedia() {
     };
 
     useLayoutEffect(() => {
-        alert('Page load');
+        getPreviews();
       }, []);
     
 
@@ -49,6 +52,7 @@ export function PreviewMedia() {
         <div className="w-full flex justify-center h-screen flex flex-col items-center mt-10">
             {previewUrls && previewUrls.map(previewUrl =>
                 <div className="m-4 w-100 h-100">
+                    <a>{previewUrl}</a>
                     <img src={previewUrl} alt="Preview" />
                 </div>
             )}

@@ -69,15 +69,18 @@ def upload():
 
 @media_bp.route('/image')
 def media_list():
-    images = Images.query.with_entities(Images.id).all()
+    try:
+        images = Images.query.with_entities(Images.id).all()
 
-    if not images:
-        print('no images found')
-        return None
+        if not images:
+            print('no images found')
+            return {"error": "No images found"}, 404
 
-    images_list = [{'preview_id': image.id} for image in images]
+        images_list = [{'preview_id': image.id} for image in images]
 
-    return jsonify(images_list)
+        return jsonify(images_list)
+    except requests.RequestException as e:
+        return {"error": "Failed to retrieve images"}, 500
 
 @media_bp.route('/image/<string:media_id>')
 def media(media_id):
