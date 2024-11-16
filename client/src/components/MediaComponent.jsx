@@ -36,7 +36,7 @@ export function ViewMedia() {
     };
 
     return (
-        <div className="w-full flex justify-center h-screen flex flex-col items-center mt-10">
+        <div className="w-full flex justify-center h-screen flex-col items-center mt-10">
             <div>
                 {imageUrl && (
                     <div className="mt-4">
@@ -52,7 +52,7 @@ export function ViewMedia() {
                 )}
             </div>
             <form
-                className="flex flex-col gap-2 justify-center flex flex-col items-center"
+                className="flex flex-col gap-2 justify-center items-center"
                 onSubmit={async e => {
                     e.preventDefault();
                     if (cid) {

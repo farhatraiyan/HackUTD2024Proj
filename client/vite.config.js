@@ -17,7 +17,8 @@ export default defineConfig({
                 about: './src/views/about.html', //http://localhost:5173/views/about.html
                 chatbot: './src/views/chatbot.html',  //http://localhost:5173/views/chatbot.html
                 signin: './src/views/signin.html', //http://localhost:5173/views/signin.html
-                user: './src/views/user.html' //http://localhost:5173/views/user.html
+                user: './src/views/user.html', //http://localhost:5173/views/user.html
+                media_image: './src/views/mediaid.html' //http://localhost:5173/views/media/<id>.html
             }
         }
     }

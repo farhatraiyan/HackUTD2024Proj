@@ -5,6 +5,7 @@ import { useState, useLayoutEffect } from "react";
 export function PreviewMedia() {
     const [cid, setCid] = useState("");
     const [previewUrls, setPreviewUrls] = useState([]);
+    const [previewIds, setPreviewIds] = useState([]);
 
     const getPreviews = async () => {
         try {
@@ -12,18 +13,12 @@ export function PreviewMedia() {
             if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
             
             const imageIds = await response.json();
-
-            alert(JSON.stringify(imageIds));
             
-            imageIds.forEach(async imageId => {
-                const imageUrl = await getPreview(imageId.preview_id);
-                alert(imageUrl);
-
-                setPreviewUrls([
-                    ...previewUrls,
-                    imageUrl
-                ])
-            });
+            const urls = await Promise.all(
+                imageIds.map(imageId => getPreview(imageId.preview_id))
+            );
+            setPreviewUrls(urls);
+            setPreviewIds(imageIds);
         } catch {
 
         }
@@ -47,15 +42,17 @@ export function PreviewMedia() {
         getPreviews();
       }, []);
     
-
-    return (
-        <div className="w-full flex justify-center h-screen flex flex-col items-center mt-10">
-            {previewUrls && previewUrls.map(previewUrl =>
-                <div className="m-4 w-100 h-100">
-                    <a>{previewUrl}</a>
-                    <img src={previewUrl} alt="Preview" />
+      //todo: a 3x preview grid, all fit in a page
+      return (
+        <div className="w-full grid grid-cols-3 justify-center h-screen items-center mt-10">
+            {previewUrls && previewUrls.map((previewUrl, index) => (
+                <div key={index} className="m-4 w-48 h-48 cursor-pointer">
+                    <a href={`/media/${previewIds[index].preview_id}`}>
+                        <img className="object-contain" src={previewUrl} alt={`Preview ${index}`} 
+                        />
+                    </a>
                 </div>
-            )}
+            ))}
         </div>
     );
 }
