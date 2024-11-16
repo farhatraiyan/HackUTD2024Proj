@@ -1,7 +1,9 @@
 from appDB import db
 from flask import Blueprint, Response, request
 from models.images import Images
+from PIL import Image
 import requests
+import io
 
 media_bp = Blueprint('media', __name__)
 service_url = "http://127.0.0.1:8102"
@@ -27,16 +29,31 @@ def upload():
             return {"error": "No file found"}, 400
 
         file = request.files['file']
-
-        if file.filename == '':
+        if not file or file.filename == '':
             return {"error": "No selected file"}, 400
 
-        file_content = file.read()
-        file.seek(0)
-        files = {'file': (file.filename, file_content, file.content_type)}
-
+        files = {'file': (file.filename, file.stream, file.content_type)}
         original_id = upload_file(files)
-        preview_id = upload_file(files)
+
+        file.seek(0)
+        with io.BytesIO() as compressed:
+            img = Image.open(file.stream)
+
+            # add white background to images with transparency
+            if img.mode in ('RGBA', 'LA'):
+                background = Image.new('RGB', img.size, (255, 255, 255))
+                background.paste(img, mask=img.split()[-1])
+                img = background
+
+            max_size = (800, 800)
+            img.thumbnail(max_size, Image.Resampling.LANCZOS)
+            img.save(compressed, format='JPEG', quality=70, optimize=True)
+            compressed.seek(0)
+            
+            preview_files = {
+                'file': (f'preview_{file.filename}', compressed, 'image/jpeg')
+            }
+            preview_id = upload_file(preview_files)
 
         new_image = Images(original_id, preview_id)
         db.session.add(new_image)
