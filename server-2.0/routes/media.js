@@ -109,6 +109,22 @@ export const getImage = async (req, res) => {
     }
 };
 
+export const listImages = async (req, res) => {
+    try {
+        console.log('Listing images');
+        const imageSets = await pinata.files.list().group(ImageSets);
+        console.log(imageSets);
+
+        const imageSetIds = imageSets.files.map(imageSet => imageSet.cid);
+        console.log(imageSetIds);
+
+        res.json(imageSetIds);
+    } catch (error) {
+        console.error('Media list error:', error);
+        res.status(500).send({ error: error.message });
+    }
+};
+
 export const uploadImage = [
     uploadConfig.single('file'),
     async (req, res) => {

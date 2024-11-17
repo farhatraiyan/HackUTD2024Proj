@@ -15,7 +15,7 @@ export function PreviewMedia() {
             const imageIds = await response.json();
             
             const urls = await Promise.all(
-                imageIds.map(imageId => getPreview(imageId.preview_id))
+                imageIds.map(imageId => getPreview(imageId))
             );
             setPreviewUrls(urls);
             setPreviewIds(imageIds);
@@ -47,7 +47,7 @@ export function PreviewMedia() {
         <div className="w-full grid grid-cols-3 justify-center h-screen items-center mt-10">
             {previewUrls && previewUrls.map((previewUrl, index) => (
                 <div key={index} className="m-4 w-48 h-48 cursor-pointer">
-                    <a href={`/media/${previewIds[index].preview_id}`}>
+                    <a href={`/media/${previewIds[index]}`}>
                         <img className="object-contain" src={previewUrl} alt={`Preview ${index}`} 
                         />
                     </a>
