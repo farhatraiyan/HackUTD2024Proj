@@ -23,7 +23,7 @@ export default function userPage(e) {
     return (
         <div>
             <div className="flex justify-center h-screen mt-10">
-                <form onClick={onClick} className="flex w-96 flex-col gap-4 justify-normal flex flex-col items-center">
+                <form onClick={onClick} className="w-96 gap-4 justify-normal flex flex-col items-center">
                     <div>
                         <div className="mb-2 block">
                             <p>{username}</p>
