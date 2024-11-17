@@ -70,6 +70,29 @@ const compressImage = async (buffer, maxWidth = 800, quality = 80) => {
     }
 }
 
+export const deleteImage = async (req, res) => {
+    try {
+        const imageSetId = req.params.id;
+        console.log('Image set ID:', imageSetId);
+
+        const imageSet = await pinata.gateways.get(imageSetId);
+        console.log(imageSet);
+
+        const { id: ogId } = await pinata.gateways.get(imageSet.data.ogImageId);
+        const { id: previewId } = await pinata.gateways.get(imageSet.data.previewId);
+
+        await pinata.files.delete([
+            ogId,
+            previewId
+        ]);
+
+        res.sendStatus(200);
+    } catch (error) {
+        console.error('Media fetch error:', error);
+        res.status(500).send({ error: error.message });
+    }
+};
+
 export const getImage = async (req, res) => {
     try {
         const imageSetId = req.params.id;
@@ -124,6 +147,63 @@ export const listImages = async (req, res) => {
         res.status(500).send({ error: error.message });
     }
 };
+
+export const updateImage = [
+    uploadConfig.single('file'),
+    async (req, res) => {
+        try {
+            if (!req.file) {
+                return res.status(400).send('No file uploaded');
+            }
+
+            const imageSetId = req.params.id;
+            console.log('Image set ID:', imageSetId);
+
+            const oldImageSet = await pinata.gateways.get(imageSetId);
+
+            if (!oldImageSet) {
+                return res.status(404).send('Image not found');
+            }
+
+            const file = new File(
+                [req.file.buffer],
+                req.file.originalname,
+                { type: req.file.mimetype }
+            );
+            const ogImageData = await pinata.upload.file(file).group(OriginalImages);
+            const ogImageId = ogImageData.cid;
+            console.log(ogImageData);
+
+            const compressedBuffer = await compressImage(req.file.buffer);
+            const compressedFile = new File(
+                [compressedBuffer],
+                req.file.originalname,
+                { type: req.file.mimetype }
+            );
+            const previewImageData = await pinata.upload.file(compressedFile).group(PreviewImages);
+            const previewImageId = previewImageData.cid;
+            console.log(previewImageData);
+
+            const newImageSet = {
+                ogImageId,
+                previewImageId
+            }
+
+            const newImageSetData = await pinata.upload.json(newImageSet).group(ImageSets);
+            console.log(uploadImageSetData);
+
+            await pinata.files.addSwap({
+                cid: imageSetId,
+                swapCid: newImageSetData.cid
+            });
+
+            res.sendStatus(200);
+        } catch (error) {
+            console.error('Media upload error:', error);
+            res.status(500).send(error.message);
+        }
+    }
+];
 
 export const uploadImage = [
     uploadConfig.single('file'),
