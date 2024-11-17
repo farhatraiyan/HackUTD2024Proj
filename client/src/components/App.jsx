@@ -9,8 +9,10 @@ import AbeImage from './Abe.jpg';
 export default function CardComponent() {
     const HoverableCard = ({ name, description, image }) => {
         const [isHovered, setIsHovered] = useState(false);
+        document.body.style = 'background: purple;';
 
         return (
+            
             <Card
                 href="#"
                 className="w-96 mb-1 mr-1 ml-1 mt-1 overflow-hidden flex items-center justify-center"
@@ -27,7 +29,7 @@ export default function CardComponent() {
                     />
                 ) : (
                     <div className="flex flex-col items-center justify-center h-full w-full bg-gray-100 p-4 rounded-xl shadow-md transition-opacity duration-200 ease-in-out">
-                        <h5 className="text-2xl font-bold text-blue-500 mb-2">
+                        <h5 className="text-2xl font-bold text-purple-700 mb-2">
                             {name}
                         </h5>
                         <p className="font-normal text-center">{description}</p>
@@ -42,24 +44,24 @@ export default function CardComponent() {
             <div className="flex justify-center items-center space-x-4">
                 <HoverableCard 
                     name="Farhat R. Kabir" 
-                    description="Some description for Farhat." 
+                    description="Billionaire Philanthropist." 
                     image={FarhatImage} 
                 />
                 <HoverableCard 
                     name="Sudin Rajbanshi" 
-                    description="Some description for Sudin." 
+                    description="Mayor of Gaylord, Texas." 
                     image={SudinImage} 
                 />
             </div>
             <div className="flex justify-center items-center space-x-4">
                 <HoverableCard 
                     name="Abe Rogers" 
-                    description="Some description for Abraham." 
+                    description="Sedimentary and Dwarf Planet." 
                     image={AbeImage} 
                 />
                 <HoverableCard 
                     name="Kyle the King" 
-                    description="Some description for Kyle." 
+                    description="Murky and Dilapidated." 
                     image={KyleImage} 
                 />
             </div>
