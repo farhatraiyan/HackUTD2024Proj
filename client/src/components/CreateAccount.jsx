@@ -51,24 +51,24 @@ function createAccount(e) {
 
     return (
         <div>
-            <div className="flex justify-center h-screen">
+            <div className="bg-purple-500 flex justify-center h-screen">
                 <form onSubmit={onSubmit} className="flex w-96 flex-col gap-4 justify-center">
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="Username" value="Username" />
+                            <Label className ="font-bold" htmlFor="Username" value="Username" />
                         </div>
                         <TextInput type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
                     </div>
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="Password" value="Password" />
+                            <Label className ="font-bold" htmlFor="Password" value="Password" />
                         </div>
                         <TextInput type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     </div>
                     <Button type="submit">Create Account</Button>
-                    <div className="flex gap-1">
+                    <div className="flex gap-1 font-bold">
                         <span>Already have an account?</span>
-                        <a href = "/signin" className="text-blue-500">Sign in</a>
+                        <a href = "/signin" className="text-blue-700">Sign in</a>
                     </div>
                 </form>
             </div>

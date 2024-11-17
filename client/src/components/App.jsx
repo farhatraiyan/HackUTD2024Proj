@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Card } from "flowbite-react";
+
 // Import images
 import FarhatImage from './Farhat.jpg';
 import SudinImage from './Sudin.png';
@@ -9,7 +10,7 @@ import AbeImage from './Abe.jpg';
 export default function CardComponent() {
     const HoverableCard = ({ name, description, image }) => {
         const [isHovered, setIsHovered] = useState(false);
-        document.body.style = 'background: purple;';
+        
 
         return (
             
@@ -40,7 +41,7 @@ export default function CardComponent() {
     };
 
     return (
-        <div className="flex flex-col justify-center items-center h-screen space-y-4">
+        <div className="bg-purple-500 flex flex-col justify-center items-center h-screen space-y-4">
             <div className="flex justify-center items-center space-x-4">
                 <HoverableCard 
                     name="Farhat R. Kabir" 

@@ -36,7 +36,7 @@ export function ViewMedia() {
     };
 
     return (
-        <div className="w-full flex justify-center h-screen flex-col items-center mt-10">
+        <div className="bg-purple-500 w-full flex justify-center h-screen flex-col items-center mt-10">
             <div>
                 {imageUrl && (
                     <div className="mt-4">
@@ -52,7 +52,7 @@ export function ViewMedia() {
                 )}
             </div>
             <form
-                className="flex flex-col gap-2 justify-center items-center"
+                className="bg-purple-500 flex flex-col gap-2 justify-center items-center"
                 onSubmit={async e => {
                     e.preventDefault();
                     if (cid) {
@@ -76,7 +76,7 @@ export function ViewMedia() {
                     Find
                 </button>
                 <div className="flex gap-1">
-                        <a href = "/upload" className="text-blue-500">Upload a file</a>
+                        <a href = "/upload" className="text-blue-700 font-bold">Upload a file</a>
                 </div>
             </form>
         </div>
