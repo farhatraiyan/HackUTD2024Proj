@@ -24,6 +24,7 @@ app.get('/about', servePage('about'));
 app.get('/create', servePage('create'));
 app.get('/media', servePage('media'));
 app.get('/media/:id([a-zA-Z0-9]{59})', servePage('mediaid'));
+app.get('/update/:id([a-zA-Z0-9]{59})', servePage('update'));
 app.get('/signin', servePage('signin'));
 app.get('/upload', servePage('upload'));
 app.get('/user', servePage('user'));
