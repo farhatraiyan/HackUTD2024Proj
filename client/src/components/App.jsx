@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Card } from "flowbite-react";
 
 // Import images
-import FarhatImage from './Farhat.jpg';
-import SudinImage from './Sudin.png';
-import KyleImage from './Kyle.jpg';
-import AbeImage from './Abe.jpg';
+import FarhatImage from './Images/Farhat.jpg';
+import SudinImage from './Images/Sudin.png';
+import KyleImage from './Images/Kyle.jpg';
+import AbeImage from './Images/Abe.jpg';
 
 export default function CardComponent() {
     const HoverableCard = ({ name, description, image }) => {
