@@ -28,16 +28,15 @@ export function MediaId() {
     
 //TODO: Add update button to update the image
     return (
-        <div className="bg-purple-500 flex justify-center flex-col items-center">
-            <p>IMAGE:</p>
+        <div className="bg-purple-500 flex justify-center flex-col items-center mt-10">
             <div>
                 {imageUrl && (
-                    <div>
+                    <div className="outline outline-4 m-10">
                         <img src={imageUrl} alt="Preview" />
                     </div>
                 )}
             </div>
-            <a href = "/upload" className="text-blue-700 font-bold">Update This Image</a>
+            <a href = "/upload" className="text-blue-700 font-bold my-5">Update This Image</a>
         </div>
     );
 }
