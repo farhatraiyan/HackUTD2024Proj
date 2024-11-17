@@ -49,7 +49,7 @@ export function UploadMedia() {
     }, [preview]);
 
     return (
-        <div className="w-full flex justify-center h-screen flex flex-col items-center mt-10">
+        <div className="w-full flex justify-center h-screen flex-col items-center mt-10">
             <form
                 className="flex flex-col gap-2 w-96"
                 onSubmit={async e => {
