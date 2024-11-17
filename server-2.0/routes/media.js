@@ -104,8 +104,9 @@ export const getImage = async (req, res) => {
         const sendOriginal = req.query.original === 'true';
         console.log('Send original:', sendOriginal);
 
-        const cid = sendOriginal ? imageSet.data.ogImageId : imageSet.data.previewImageId;
-        const imageGroup = sendOriginal ? OriginalImages : PreviewImages;
+        // const cid = sendOriginal ? imageSet.data.ogImageId : imageSet.data.previewImageId;
+        // const imageGroup = sendOriginal ? OriginalImages : PreviewImages;
+        const cid = imageSet.data.ogImageId;
 
         const response = await pinata.gateways.get(cid);
         const { data, contentType } = response;
@@ -174,19 +175,19 @@ export const updateImage = [
             const ogImageId = ogImageData.cid;
             console.log(ogImageData);
 
-            const compressedBuffer = await compressImage(req.file.buffer);
-            const compressedFile = new File(
-                [compressedBuffer],
-                req.file.originalname,
-                { type: req.file.mimetype }
-            );
-            const previewImageData = await pinata.upload.file(compressedFile).group(PreviewImages);
-            const previewImageId = previewImageData.cid;
-            console.log(previewImageData);
+            // const compressedBuffer = await compressImage(req.file.buffer);
+            // const compressedFile = new File(
+            //     [compressedBuffer],
+            //     req.file.originalname,
+            //     { type: req.file.mimetype }
+            // );
+            // const previewImageData = await pinata.upload.file(compressedFile).group(PreviewImages);
+            // const previewImageId = previewImageData.cid;
+            // console.log(previewImageData);
 
             const newImageSet = {
                 ogImageId,
-                previewImageId
+                // previewImageId
             }
 
             const newImageSetData = await pinata.upload.json(newImageSet).group(ImageSets);
@@ -222,19 +223,19 @@ export const uploadImage = [
             const ogImageId = ogImageData.cid;
             console.log(ogImageData);
 
-            const compressedBuffer = await compressImage(req.file.buffer);
-            const compressedFile = new File(
-                [compressedBuffer],
-                req.file.originalname,
-                { type: req.file.mimetype }
-            );
-            const previewImageData = await pinata.upload.file(compressedFile).group(PreviewImages);
-            const previewImageId = previewImageData.cid;
-            console.log(previewImageData);
+            // const compressedBuffer = await compressImage(req.file.buffer);
+            // const compressedFile = new File(
+            //     [compressedBuffer],
+            //     req.file.originalname,
+            //     { type: req.file.mimetype }
+            // );
+            // const previewImageData = await pinata.upload.file(compressedFile).group(PreviewImages);
+            // const previewImageId = previewImageData.cid;
+            // console.log(previewImageData);
 
             const imageSet = {
                 ogImageId,
-                previewImageId
+                // previewImageId
             }
 
             const uploadImageSetData = await pinata.upload.json(imageSet).group(ImageSets);
