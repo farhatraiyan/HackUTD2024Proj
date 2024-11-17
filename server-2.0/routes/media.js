@@ -1,14 +1,6 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
-import { PinataSDK } from "pinata";
 import multer from 'multer';
+import { pinata } from './pinata.js';
 import sharp from 'sharp';
-
-const pinata = new PinataSDK({
-    pinataJwt: process.env.PINATA_JWT,
-    pinataGateway: process.env.PINATA_GATEWAY,
-});
 
 const ImageSets = "019337aa-ef67-774d-97ff-87536a1fc441";
 const OriginalImages = "019337ad-e246-7433-962f-498a54b6812a";
@@ -129,6 +121,9 @@ export const uploadImage = [
     uploadConfig.single('file'),
     async (req, res) => {
         try {
+            const groups = await pinata.groups.list();
+            console.log(groups);
+
             if (!req.file) {
                 return res.status(400).send('No file uploaded');
             }
