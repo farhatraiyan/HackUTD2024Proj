@@ -44,7 +44,7 @@ export function PreviewMedia() {
     
       // TODO: Add an upload button to redirect to the upload page.
       return (
-        <div className="bg-purple-500 w-full grid grid-cols-3 justify-center h-screen items-center mt-10">
+        <div className="bg-purple-200 w-full grid grid-cols-3 justify-center h-screen items-center mt-10">
             {previewUrls && previewUrls.map((previewUrl, index) => (
                 <div key={index} className="w-48 h-48 cursor-pointer">
                     <a href={`/media/${previewIds[index]}`}>
