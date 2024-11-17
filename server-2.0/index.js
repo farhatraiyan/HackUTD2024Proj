@@ -2,7 +2,7 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
-import { deleteImage, getImage, listImages, updateImage, uploadImage } from './routes/media.js';
+import { getImage, listImages, uploadImage } from './routes/media.js';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -29,7 +29,6 @@ app.get('/upload', servePage('upload'));
 app.get('/user', servePage('user'));
 
 app.get('/media/image/:id', getImage);
-app.delete('/media/image/:id', deleteImage);
 app.get('/media/image', listImages);
 app.post('/media/upload', uploadImage);
 
