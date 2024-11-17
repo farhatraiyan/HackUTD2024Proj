@@ -6,7 +6,7 @@
   "scripts": {
     "api_test": "mocha --exit \"apiTest.js\"",
     "dev": "vite",
-    "prebuild": "shx rm -rf ../server/dist",
+    "prebuild": "shx rm -rf ../server-2.0/dist",
     "build": "vite build",
     "start": "nodemon",
     "lint": "eslint .",
