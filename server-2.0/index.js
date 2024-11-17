@@ -5,7 +5,7 @@ import path from 'path';
 import passport from 'passport';
 import session from 'express-session';
 
-import { getImage, listImages, uploadImage } from './routes/media.js';
+import { deleteImage, getImage, listImages, updateImage, uploadImage } from './routes/media.js';
 import { waStrat, getChallenge, createChallenge } from './routes/webauthnProvider.js';
 
 const app = express();
@@ -50,9 +50,11 @@ app.get('/signin', servePage('signin'));
 app.get('/upload', servePage('upload'));
 app.get('/user', servePage('user'));
 
-app.get('/media/image', listImages);
 app.get('/media/image/:id', getImage);
+app.delete('/media/image/:id', deleteImage);
+app.get('/media/image', listImages);
 app.post('/media/upload', uploadImage);
+app.put('/media/upload/:id', updateImage);
 
 app.post('/signin/passkey', passport.authorize('webauthn', { failureRedirect: '/signin' }));
 app.get('/webauthn/challenge', getChallenge);

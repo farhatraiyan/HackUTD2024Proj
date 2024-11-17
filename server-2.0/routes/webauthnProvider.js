@@ -14,7 +14,7 @@ export const waStrat = () => {
             const encoded_id = base64url.encode(userHandle);
             const cid = base64url.decode(encoded_id);
 
-            const user = pinata.gateways.get(cid);
+            const { data: user } = pinata.gateways.get(cid);
             console.log('User data:', user);
 
             callback(null, user, user.publicKey);
