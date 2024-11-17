@@ -56,7 +56,35 @@ app.get('/media/image', listImages);
 app.post('/media/upload', uploadImage);
 app.put('/media/upload/:id', updateImage);
 
-app.post('/signin/passkey', passport.authorize('webauthn', { failureRedirect: '/signin' }));
+app.post('/signin/passkey', passport.authorize('webauthn', { failureRedirect: '/signin' }), async (req, res) => {
+    req.login(req.account, (err) => {
+        if (err) {
+            console.error('Session error:', err);
+            return res.redirect('/signin');
+        }
+
+        req.session.user = req.account;
+
+        res.redirect('/user');
+    });
+});
+app.get('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            console.error('Logout error:', err);
+            return res.status(500).json({ error: 'Logout failed' });
+        }
+        
+        req.session.destroy((err) => {
+            if (err) {
+                console.error('Session destruction error:', err);
+                return res.status(500).json({ error: 'Session destruction failed' });
+            }
+            
+            res.redirect('/signin');
+        });
+    });
+});
 app.get('/webauthn/challenge', getChallenge);
 app.post('/webauthn/register', createChallenge);
 
