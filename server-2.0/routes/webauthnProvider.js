@@ -11,12 +11,13 @@ export const waStrat = () => {
         function verify (id, userHandle, callback) {
             console.log('Verifying:', id, userHandle);
 
-            const userData = pinata.gateways.get(id);
-            console.log('User data:', userData);
+            const encoded_id = base64url.encode(userHandle);
+            const cid = base64url.decode(encoded_id);
 
-            throw new Error('Not implemented');
+            const user = pinata.gateways.get(cid);
+            console.log('User data:', user);
 
-            callback(null, user);
+            callback(null, user, user.publicKey);
         },
         function register(user, id, publicKey, callback) {
             (async () => {
@@ -26,10 +27,24 @@ export const waStrat = () => {
                     const encoded_id = base64url.encode(user.id);
                     const cid = base64url.decode(encoded_id);
 
+                    const newUser = {
+                        name: user.name,
+                        keyId: id,
+                        publicKey: publicKey
+                    }
+                    console.log('new user: ', newUser);
+
+                    const { cid: newAccountCid } = await pinata.upload.json(newUser).group(Accounts);
+
+                    await pinata.files.addSwap({
+                        cid: cid,
+                        swapCid: newAccountCid
+                    });
+
                     const userData = await pinata.gateways.get(cid);
                     console.log('User data:', userData);
 
-                    callback(null, user);
+                    callback(null, newUser);
                 } catch (error) {
                     console.error('Error:', error);
                     callback(error);
@@ -54,7 +69,7 @@ export const createChallenge = async (req, res, next) => {
         name: req.body.name,
         keyId: null,
         publicKey: null
-    }).group(Accounts);
+    });
 
     console.log('Account data 1:', accountData);
 
