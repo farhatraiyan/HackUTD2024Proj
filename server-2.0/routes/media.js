@@ -32,6 +32,16 @@ const PreviewImages = "019337ae-1302-7a94-acb6-31a0614cb173";
     use .group("string") with upload.file for grouping
 */
 
+/* Image optimization (use for previews in the future)
+    const data = await pinata.gateways
+        .get("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4") // CID
+        .optimizeImage({
+            width: 500,
+            height: 500,
+            format: "webp"
+    })
+*/
+
 const storage = multer.memoryStorage();
 const uploadConfig = multer({ 
     storage: storage,
@@ -62,7 +72,18 @@ const compressImage = async (buffer, maxWidth = 800, quality = 80) => {
 
 export const getImage = async (req, res) => {
     try {
-        const cid = req.params.id;
+        const imageSetId = req.params.id;
+        console.log('Image set ID:', imageSetId);
+
+        const imageSet = await pinata.gateways.get(imageSetId);
+        console.log(imageSet);
+
+        const sendOriginal = req.query.original === 'true';
+        console.log('Send original:', sendOriginal);
+
+        const cid = sendOriginal ? imageSet.data.ogImageId : imageSet.data.previewImageId;
+        const imageGroup = sendOriginal ? OriginalImages : PreviewImages;
+
         const response = await pinata.gateways.get(cid);
         const { data, contentType } = response;
         console.log(response);
@@ -102,7 +123,7 @@ export const uploadImage = [
                 { type: req.file.mimetype }
             );
             const ogImageData = await pinata.upload.file(file).group(OriginalImages);
-            const ogImageId = ogImageData.id;
+            const ogImageId = ogImageData.cid;
             console.log(ogImageData);
 
             const compressedBuffer = await compressImage(req.file.buffer);
@@ -112,7 +133,7 @@ export const uploadImage = [
                 { type: req.file.mimetype }
             );
             const previewImageData = await pinata.upload.file(compressedFile).group(PreviewImages);
-            const previewImageId = previewImageData.id;
+            const previewImageId = previewImageData.cid;
             console.log(previewImageData);
 
             const imageSet = {
