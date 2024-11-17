@@ -22,7 +22,8 @@ export function UploadMedia() {
                 throw new Error(`HTTP error: ${response.status} - ${JSON.stringify(errorData)}`);
             }
 
-            alert(response.json());
+            setMedia(null);
+            setPreview("");
             return;
         } catch (error) {
             alert("Upload failed:" + error);
