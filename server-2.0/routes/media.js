@@ -175,7 +175,7 @@ export const uploadImage = [
             console.log('after masking')
 
             //keeps checking once every minute if the masked file is generated
-            const maskedBuffer = await async.retry({ times: 6, interval: 60000 }, async () => {
+            const maskedBuffer = await async.retry({ times: 12, interval: 60000 }, async () => {
                 try{
                 console.log('checking');
                 const renderedFile = fs.readFileSync(`${mistRetrieve}\\5_noise_${req.file.originalname}`);
