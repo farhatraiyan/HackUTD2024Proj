@@ -44,7 +44,7 @@ export function PreviewMedia() {
     
       // TODO: Add an upload button to redirect to the upload page.
       return (
-        <div className="bg-purple-200 min-h-screen p-8 mt-10">
+        <div className="bg-gradient-to-b from-purple-500 to-purple-300 min-h-screen p-8 mt-10">
             <div className="container mx-auto">
                 <div className="grid grid-cols-3 gap-8 justify-items-center">
                     {previewUrls && previewUrls.map((previewUrl, index) => (

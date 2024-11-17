@@ -28,7 +28,7 @@ export function MediaId() {
     
 //TODO: Add update button to update the image
     return (
-        <div className="bg-purple-200 flex justify-center flex-col items-center mt-10 min-h-screen">
+        <div className="bg-gradient-to-b from-purple-500 to-purple-300 flex justify-center flex-col items-center mt-10 min-h-screen">
             <div>
                 {imageUrl && (
                     <div className="outline outline-4 m-10">

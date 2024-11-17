@@ -41,7 +41,7 @@ export default function CardComponent() {
     };
 
     return (
-        <div className="bg-purple-200 flex flex-col justify-center items-center h-screen space-y-16">
+        <div className="bg-gradient-to-b from-purple-500 to-purple-300 min-h-screen flex flex-col justify-center items-center h-screen space-y-16">
             <div className="flex justify-center items-center space-x-16">
                 <HoverableCard 
                     name="Farhat R. Kabir" 

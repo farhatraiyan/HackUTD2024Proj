@@ -51,7 +51,7 @@ function createAccount(e) {
 
     return (
         <div>
-            <div className="bg-purple-200 flex justify-center h-screen">
+            <div className="bg-gradient-to-b from-purple-500 to-purple-300 flex justify-center h-screen">
                 <form onSubmit={onSubmit} className="flex w-96 flex-col gap-4 justify-center">
                     <div>
                         <div className="mb-2 block">

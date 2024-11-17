@@ -70,7 +70,7 @@ export function UploadMedia() {
                         type="file"
                         accept="image/*"
                         onChange={handleFileChange}
-                        className="block w-full p-2 border border-gray-300 rounded-lg text-gray-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="block w-full p-2 border border-gray-300 text-gray-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                     {preview && (
                         <div className="mt-4 flex justify-center">
