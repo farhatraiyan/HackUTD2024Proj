@@ -26,7 +26,7 @@ export function MediaId() {
     
     useLayoutEffect(()=>getMedia(imageCid), []);
     
-
+//TODO: Add update button to update the image
     return (
         <div className="w-full flex justify-center h-screen flex-col items-center mt-10">
             <p>IMAGE:</p>
@@ -37,6 +37,7 @@ export function MediaId() {
                     </div>
                 )}
             </div>
+            <a href = "/upload" className="text-blue-500">Update This Image</a>
         </div>
     );
 }

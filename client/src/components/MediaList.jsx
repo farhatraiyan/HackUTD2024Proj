@@ -42,7 +42,7 @@ export function PreviewMedia() {
         getPreviews();
       }, []);
     
-      //todo: a 3x preview grid, all fit in a page
+      // TODO: Add an upload button to redirect to the upload page.
       return (
         <div className="w-full grid grid-cols-3 justify-center h-screen items-center mt-10">
             {previewUrls && previewUrls.map((previewUrl, index) => (
@@ -53,6 +53,7 @@ export function PreviewMedia() {
                     </a>
                 </div>
             ))}
+            <a href = "/upload" className="text-blue-500">Upload a file</a>
         </div>
     );
 }
