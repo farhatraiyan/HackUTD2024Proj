@@ -36,7 +36,7 @@ export function MediaId() {
                     </div>
                 )}
             </div>
-            <a href = {`/update/${imageCid}`} className="text-blue-700 font-bold my-5">Update This Image</a>
+            <a href = {`/upload`} className="text-blue-700 font-bold my-5">Update This Image</a>
         </div>
     );
 }
